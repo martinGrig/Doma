@@ -5,4 +5,8 @@
     <string name="sign_up">sign up</string>
     <string name="go_to_sign_up">go to sign up</string>
     <string name="sign_in">sign in</string>
+    <string name="doma">Doma</string>
+    <string name="kitchen">Kitchen</string>
+    <string name="smooking_room">Smooking Room</string>
+    <string name="profile">Profile</string>
 </resources>
