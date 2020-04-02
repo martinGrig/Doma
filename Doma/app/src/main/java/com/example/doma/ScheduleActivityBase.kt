@@ -23,7 +23,7 @@ import java.util.*
  * Website: http://alamkanak.github.io
  */
 abstract class ScheduleActivityBase : AppCompatActivity(), EventClickListener,
-    MonthChangeListener, EventLongPressListener, EmptyViewLongPressListener {
+    MonthChangeListener, EventLongPressListener, EmptyViewLongPressListener, ScrollListener {
     private var mWeekViewType: Int = ScheduleActivityBase.TYPE_THREE_DAY_VIEW
     var weekView: WeekView? = null
         private set
@@ -48,7 +48,7 @@ abstract class ScheduleActivityBase : AppCompatActivity(), EventClickListener,
         weekView!!.emptyViewLongPressListener = this
 
         // to get an event every time the first visible day has changed
-/*        weekView!!.scrollListener = this*/
+        weekView!!.scrollListener = this
 
     }
 
@@ -107,5 +107,15 @@ abstract class ScheduleActivityBase : AppCompatActivity(), EventClickListener,
 
     companion object {
         private const val TYPE_THREE_DAY_VIEW = 2
+    }
+
+    override fun onFirstVisibleDayChanged(
+        newFirstVisibleDay: Calendar?,
+        oldFirstVisibleDay: Calendar?
+    ) {
+        if(newFirstVisibleDay != oldFirstVisibleDay)
+        {
+            weekView?.goToToday()
+        }
     }
 }
