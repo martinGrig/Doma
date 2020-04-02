@@ -16,7 +16,7 @@ class MainActivity : AppCompatActivity() {
         auth = FirebaseAuth.getInstance()
 
         btnGoToSignUp.setOnClickListener {
-            startActivity(Intent(this, SignInActivity::class.java))
+            startActivity(Intent(this, ScheduleActivityBasic::class.java))
             finish()
         }
     }
