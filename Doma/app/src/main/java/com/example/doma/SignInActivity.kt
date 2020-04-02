@@ -38,7 +38,7 @@ class SignInActivity : AppCompatActivity() {
     private fun updateUI(currentUser: FirebaseUser?) {
         if(currentUser != null){
             if(currentUser.isEmailVerified){
-                startActivity(Intent(this, MainActivity::class.java))
+                startActivity(Intent(this, ScheduleActivityBasic::class.java))
                 finish()
             }
             else{
