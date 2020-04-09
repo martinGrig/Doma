@@ -1,11 +1,22 @@
 package com.example.doma
 
+import android.os.Bundle
 import android.widget.Toast
 import com.alamkanak.weekview.WeekView
 import com.alamkanak.weekview.WeekViewEvent
+import com.google.android.material.snackbar.Snackbar
+import kotlinx.android.synthetic.main.activity_schedule.*
 import java.util.*
 
 class ScheduleActivityBasic : ScheduleActivityBase() {
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        add.setOnClickListener { view ->
+            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                .setAction("Action", null).show()
+        }
+    }
     override fun onMonthChange(
         newYear: Int,
         newMonth: Int
@@ -22,25 +33,26 @@ class ScheduleActivityBasic : ScheduleActivityBase() {
         var endTime = startTime.clone() as Calendar
         endTime.add(Calendar.HOUR, 1)
         endTime[Calendar.MONTH] = newMonth - 1
-        var event = WeekViewEvent(1, getEventTitle(startTime), startTime, endTime)
+        var event = WeekViewEvent(1, "User 56", startTime, endTime)
         event.color = resources.getColor(R.color.event_color_01)
         events.add(event)
 
-        /*startTime = Calendar.getInstance()
-        startTime[Calendar.HOUR_OF_DAY] = 3
+        startTime = Calendar.getInstance()
+        startTime[Calendar.HOUR_OF_DAY] = 6
         startTime[Calendar.MINUTE] = 30
         startTime[Calendar.MONTH] = newMonth - 1
         startTime[Calendar.YEAR] = newYear
 
         endTime = startTime.clone() as Calendar
-        endTime[Calendar.HOUR_OF_DAY] = 4
+        endTime[Calendar.HOUR_OF_DAY] = 8
         endTime[Calendar.MINUTE] = 30
         endTime[Calendar.MONTH] = newMonth - 1
+        //startTime.add(Calendar.DATE, 1)
 
-        event = WeekViewEvent(10, getEventTitle(startTime), startTime, endTime)
+        event = WeekViewEvent(2, "User66", startTime, endTime)
         event.color = resources.getColor(R.color.event_color_02)
         events.add(event)
-
+/*
         startTime = Calendar.getInstance()
         startTime[Calendar.HOUR_OF_DAY] = 4
         startTime[Calendar.MINUTE] = 20
