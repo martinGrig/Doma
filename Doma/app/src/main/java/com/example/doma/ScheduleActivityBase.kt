@@ -54,7 +54,7 @@ abstract class ScheduleActivityBase : AppCompatActivity(), EventClickListener,
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.main, menu)
+        menuInflater.inflate(R.menu.activity_drawer_navigation_drawer, menu)
         return true
     }
     /**
