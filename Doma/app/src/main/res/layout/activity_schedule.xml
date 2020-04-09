@@ -6,6 +6,26 @@
     android:background="#fff"
     tools:context=".ScheduleActivityBase">
 
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/add"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:layout_gravity="bottom|end"
+        android:layout_marginStart="307dp"
+        android:layout_marginLeft="307dp"
+        android:layout_marginTop="500dp"
+        android:layout_marginEnd="48dp"
+        android:layout_marginRight="48dp"
+        android:layout_marginBottom="47dp"
+        app:backgroundTint="#FF5722"
+        app:srcCompat="@android:drawable/ic_input_add" />
+
     <com.alamkanak.weekview.WeekView
         android:id="@+id/weekView"
         android:layout_width="match_parent"
@@ -22,7 +42,6 @@
         app:noOfVisibleDays="3"
         app:textSize="12sp"
         app:todayBackgroundColor="#1848adff"
-        app:todayHeaderTextColor="@color/accent"
-        />
+        app:todayHeaderTextColor="@color/accent" />
 
 </RelativeLayout>

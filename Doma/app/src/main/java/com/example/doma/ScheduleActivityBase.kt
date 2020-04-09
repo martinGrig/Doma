@@ -50,6 +50,7 @@ abstract class ScheduleActivityBase : AppCompatActivity(), EventClickListener,
         // to get an event every time the first visible day has changed
         weekView!!.scrollListener = this
 
+
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {

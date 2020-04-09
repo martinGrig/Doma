@@ -13,7 +13,7 @@
         <activity android:name=".SignInActivity"></activity>
         <activity android:name=".SignUpActivity" />
         <activity android:name=".ScheduleActivityBasic"
-            android:label="Schedule">>
+            android:label="Schedule">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
