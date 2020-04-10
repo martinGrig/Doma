@@ -11,15 +11,15 @@
         android:label="@string/menu_home"
         tools:layout="@layout/fragment_home">
 
-        <action
+        <!--<action
             android:id="@+id/action_HomeFragment_to_HomeSecondFragment"
-            app:destination="@id/nav_home_second" />
+            app:destination="@id/nav_home_second" />-->
     </fragment>
     <fragment
         android:id="@+id/nav_home_second"
-        android:name="com.example.doma.ui.home.HomeSecondFragment"
+        android:name="com.example.doma.ScheduleActivityBasic"
         android:label="@string/home_second"
-        tools:layout="@layout/fragment_home_second">
+        tools:layout="@layout/activity_schedule">
         <action
             android:id="@+id/action_HomeSecondFragment_to_HomeFragment"
             app:destination="@id/nav_home" />
@@ -29,7 +29,7 @@
             app:argType="string" />
     </fragment>
 
-    <fragment
+    <!--<fragment
         android:id="@+id/nav_gallery"
         android:name="com.example.doma.ui.gallery.GalleryFragment"
         android:label="@string/menu_gallery"
@@ -39,5 +39,5 @@
         android:id="@+id/nav_slideshow"
         android:name="com.example.doma.ui.slideshow.SlideshowFragment"
         android:label="@string/menu_slideshow"
-        tools:layout="@layout/fragment_slideshow" />
+        tools:layout="@layout/fragment_slideshow" />-->
 </navigation>
