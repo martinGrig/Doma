@@ -8,10 +8,20 @@ import android.transition.TransitionManager
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
+<<<<<<< HEAD
 import android.widget.*
 import androidx.annotation.RequiresApi
 import com.alamkanak.weekview.WeekViewEvent
 import com.google.firebase.database.FirebaseDatabase
+=======
+import android.widget.Button
+import android.widget.LinearLayout
+import android.widget.PopupWindow
+import android.widget.TextView
+import androidx.annotation.RequiresApi
+import com.alamkanak.weekview.WeekViewEvent
+import com.google.android.material.snackbar.Snackbar
+>>>>>>> f14203988849a17afb66021c4ae3b33402047d91
 import kotlinx.android.synthetic.main.activity_schedule.*
 import java.util.*
 
@@ -68,6 +78,9 @@ class ScheduleActivityBasic : ScheduleActivityBase() {
                 // Dismiss the popup window
                 popupWindow.dismiss()
             }
+
+            val snack = Snackbar.make(it,"$thisYear Month: $thisMonth",Snackbar.LENGTH_LONG)
+            snack.show()
 //endregion
 
             val tbDate = view.findViewById<TextView>(R.id.tbDate).text.toString()
@@ -79,6 +92,7 @@ class ScheduleActivityBasic : ScheduleActivityBase() {
             btnBook.setOnClickListener{
                 //events.clear()
 
+<<<<<<< HEAD
                 /*var startTime = Calendar.getInstance()
                 startTime[Calendar.HOUR_OF_DAY] = start
                 startTime[Calendar.MINUTE] = 0
@@ -104,28 +118,34 @@ class ScheduleActivityBasic : ScheduleActivityBase() {
                 var firebaseDatabase = FirebaseDatabase.getInstance()
                 var databaseReference = firebaseDatabase.getReference()
                 databaseReference.child("events").push().setValue(event)
+=======
+
+
+                var startTime = Calendar.getInstance()
+                startTime.set(thisYear, thisMonth, date, start, 0)
+                var endTime = Calendar.getInstance()
+                endTime.set(thisYear, thisMonth, date, start+2, 0)
+
+                var event = WeekViewEvent(3, "Username", startTime, endTime)
+                event.color = R.color.event_color_01
+                events.add(event)
+
+>>>>>>> f14203988849a17afb66021c4ae3b33402047d91
 
                 //onMonthChange(thisYear, thisMonth)
                 popupWindow.dismiss()
             }
 
-            // Finally, show the popup window on app
             TransitionManager.beginDelayedTransition(schedule)
-            popupWindow.showAtLocation(
-                weekView, // Location to display popup window
-                Gravity.CENTER, // Exact position of layout to display popup
-                0, // X offset
-                0 // Y offset
-            )
+            popupWindow.showAtLocation(weekView, Gravity.CENTER, 0, 0)
         }
     }
 
 
     override fun onMonthChange(newYear: Int, newMonth: Int): List<WeekViewEvent> {
-        thisMonth = newMonth
+        thisMonth = newMonth -1
         thisYear = newYear
 
-        //events.clear()
         //region Events
         var startTime = Calendar.getInstance()
         startTime[Calendar.HOUR_OF_DAY] = 3
@@ -138,7 +158,7 @@ class ScheduleActivityBasic : ScheduleActivityBase() {
         var event = WeekViewEvent(1, "You", startTime, endTime)
         event.color = R.color.event_color_02
         events.add(event)
-/*
+
         startTime = Calendar.getInstance()
         startTime[Calendar.HOUR_OF_DAY] = 6
         startTime[Calendar.MINUTE] = 30
@@ -153,7 +173,7 @@ class ScheduleActivityBasic : ScheduleActivityBase() {
 
         event = WeekViewEvent(2, "User66", startTime, endTime)
         event.color = R.color.event_color_02
-        events.add(event)*/
+        events.add(event)
 
         return events
         //endregion
