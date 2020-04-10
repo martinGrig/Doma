@@ -30,6 +30,7 @@ class ScheduleActivityBasic : ScheduleActivityBase() {
 
         val add: View = findViewById(R.id.addEvent)
         add.setOnClickListener {
+
 //region Popup Initialize
             // Initialize a new layout inflater instance
             val inflater: LayoutInflater = getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
@@ -70,7 +71,6 @@ class ScheduleActivityBasic : ScheduleActivityBase() {
             }
 //endregion
 
-            // Get the widgets reference from custom view
             val tbDate = view.findViewById<TextView>(R.id.tbDate).text.toString()
             val date = Integer.parseInt(tbDate)
             val tbStart = view.findViewById<TextView>(R.id.tbStart).text.toString()
