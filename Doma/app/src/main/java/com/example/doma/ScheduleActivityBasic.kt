@@ -1,6 +1,7 @@
 package com.example.doma
 
 import android.os.Bundle
+import android.view.View
 import android.widget.Toast
 import com.alamkanak.weekview.WeekView
 import com.alamkanak.weekview.WeekViewEvent
@@ -12,19 +13,19 @@ class ScheduleActivityBasic : ScheduleActivityBase() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        add.setOnClickListener { view ->
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show()
+
+        val add: View = findViewById(R.id.addEvent)
+                add.setOnClickListener { view ->
+                Snackbar.make(view, "Here's a Snackbar", Snackbar.LENGTH_LONG)
+                    .setAction("Action", null)
+                    .show()
+            }
         }
-    }
-    override fun onMonthChange(
-        newYear: Int,
-        newMonth: Int
-    ): List<WeekViewEvent> {
 
-        val events: MutableList<WeekViewEvent> =
-            ArrayList()
+    override fun onMonthChange(newYear: Int, newMonth: Int): List<WeekViewEvent> {
+        val events: MutableList<WeekViewEvent> = ArrayList()
 
+        //region Events
         var startTime = Calendar.getInstance()
         startTime[Calendar.HOUR_OF_DAY] = 3
         startTime[Calendar.MINUTE] = 0
@@ -34,7 +35,7 @@ class ScheduleActivityBasic : ScheduleActivityBase() {
         endTime.add(Calendar.HOUR, 1)
         endTime[Calendar.MONTH] = newMonth - 1
         var event = WeekViewEvent(1, "User 56", startTime, endTime)
-        event.color = resources.getColor(R.color.event_color_01)
+        event.color = R.color.event_color_01
         events.add(event)
 
         startTime = Calendar.getInstance()
@@ -50,9 +51,24 @@ class ScheduleActivityBasic : ScheduleActivityBase() {
         //startTime.add(Calendar.DATE, 1)
 
         event = WeekViewEvent(2, "User66", startTime, endTime)
-        event.color = resources.getColor(R.color.event_color_02)
+        event.color = R.color.event_color_02
         events.add(event)
+
+        return events
+        //endregion
+    }
+}
 /*
+    override fun onMonthChange(
+        newYear: Int,
+        newMonth: Int
+    ): List<WeekViewEvent> {
+
+        val events: MutableList<WeekViewEvent> =
+            ArrayList()
+
+
+
         startTime = Calendar.getInstance()
         startTime[Calendar.HOUR_OF_DAY] = 4
         startTime[Calendar.MINUTE] = 20
@@ -124,10 +140,10 @@ class ScheduleActivityBasic : ScheduleActivityBase() {
         endTime.add(Calendar.HOUR_OF_DAY, 3)
         event = WeekViewEvent(5, getEventTitle(startTime), startTime, endTime)
         event.color = resources.getColor(R.color.event_color_02)
-        events.add(event)*/
+        events.add(event)
 
         //AllDay event
-        /*startTime = Calendar.getInstance()
+        startTime = Calendar.getInstance()
         startTime[Calendar.HOUR_OF_DAY] = 0
         startTime[Calendar.MINUTE] = 0
         startTime[Calendar.MONTH] = newMonth - 1
@@ -164,11 +180,10 @@ class ScheduleActivityBasic : ScheduleActivityBase() {
         endTime[Calendar.DAY_OF_MONTH] = 11
         event = WeekViewEvent(8, getEventTitle(startTime), startTime, endTime)
         event.color = resources.getColor(R.color.event_color_01)
-        events.add(event)*/
+        events.add(event)
         return events
     }
-
-/*       override fun onFirstVisibleDayChanged(
+      override fun onFirstVisibleDayChanged(
            newFirstVisibleDay: Calendar?,
            oldFirstVisibleDay: Calendar
        ) {
@@ -177,4 +192,3 @@ class ScheduleActivityBasic : ScheduleActivityBase() {
                Toast.makeText(this, "Not Today", Toast.LENGTH_SHORT).show()
            }
        }*/
-}

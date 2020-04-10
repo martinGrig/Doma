@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.util.TypedValue
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.alamkanak.weekview.DateTimeInterpreter
@@ -12,16 +13,10 @@ import com.alamkanak.weekview.MonthLoader.MonthChangeListener
 import com.alamkanak.weekview.WeekView
 import com.alamkanak.weekview.WeekView.*
 import com.alamkanak.weekview.WeekViewEvent
+import com.google.android.material.snackbar.Snackbar
 import java.text.SimpleDateFormat
 import java.util.*
 
-
-/**
- * This is a base activity which contains week view and all the codes necessary to initialize the
- * week view.
- * Created by Raquib-ul-Alam Kanak on 1/3/2014.
- * Website: http://alamkanak.github.io
- */
 abstract class ScheduleActivityBase : AppCompatActivity(), EventClickListener,
     MonthChangeListener, EventLongPressListener, EmptyViewLongPressListener, ScrollListener {
     private var mWeekViewType: Int = ScheduleActivityBase.TYPE_THREE_DAY_VIEW
@@ -38,7 +33,7 @@ abstract class ScheduleActivityBase : AppCompatActivity(), EventClickListener,
         weekView!!.setOnEventClickListener(this)
 
         // The week view has infinite scrolling horizontally. We have to provide the events of a
-// month every time the month changes on the week view.
+        // month every time the month changes on the week view.
         weekView!!.monthChangeListener = this
 
         // Set long press listener for events.
@@ -53,15 +48,16 @@ abstract class ScheduleActivityBase : AppCompatActivity(), EventClickListener,
 
     }
 
+    //region Menu Events
+
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.activity_drawer_navigation_drawer, menu)
         return true
     }
-    /**
-     * Set up a date time interpreter which will show short date values when in week view and long
-     * date values otherwise.
-     * @param shortDate True if the date values should be short.
-     */
+    //endregion
+
+    //region Schedule Events
+
     private fun setupDateTimeInterpreter(shortDate: Boolean) {
         weekView!!.dateTimeInterpreter = object : DateTimeInterpreter {
             override fun interpretDate(date: Calendar): String {
@@ -119,4 +115,24 @@ abstract class ScheduleActivityBase : AppCompatActivity(), EventClickListener,
             weekView?.goToToday()
         }
     }
+    //endregion
+
+    //region Create Events
+
+
+    //endregion
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
