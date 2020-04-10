@@ -18,22 +18,21 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 abstract class ScheduleActivityBase : AppCompatActivity(), EventClickListener,
-    MonthChangeListener, EventLongPressListener, EmptyViewLongPressListener, ScrollListener {
-    private var mWeekViewType: Int = ScheduleActivityBase.TYPE_THREE_DAY_VIEW
+    MonthChangeListener, EventLongPressListener, EmptyViewLongPressListener {
     var weekView: WeekView? = null
         private set
 
     protected override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_schedule)
+
         // Get a reference for the week view in the layout.
-        weekView = findViewById<WeekView>(R.id.weekView)
+        weekView = findViewById(R.id.weekView)
 
         // Show a toast message about the touched event.
         weekView!!.setOnEventClickListener(this)
 
-        // The week view has infinite scrolling horizontally. We have to provide the events of a
-        // month every time the month changes on the week view.
+        // The week view has infinite scrolling horizontally. We have to provide the events of a month every time the month changes on the week view.
         weekView!!.monthChangeListener = this
 
         // Set long press listener for events.
@@ -41,12 +40,6 @@ abstract class ScheduleActivityBase : AppCompatActivity(), EventClickListener,
 
         // Set long press listener for empty view
         weekView!!.emptyViewLongPressListener = this
-
-        // to get an event every time the first visible day has changed
-        weekView!!.scrollListener = this
-
-
-
     }
 
     //region Menu Events
@@ -80,7 +73,7 @@ abstract class ScheduleActivityBase : AppCompatActivity(), EventClickListener,
         }
     }
 
-    protected fun getEventTitle(time: Calendar): String {
+    private fun getEventTitle(time: Calendar): String {
         return String.format(
             "Event of %02d:%02d %s/%d",
             time[Calendar.HOUR_OF_DAY],
@@ -105,16 +98,6 @@ abstract class ScheduleActivityBase : AppCompatActivity(), EventClickListener,
 
     companion object {
         private const val TYPE_THREE_DAY_VIEW = 2
-    }
-
-    override fun onFirstVisibleDayChanged(
-        newFirstVisibleDay: Calendar?,
-        oldFirstVisibleDay: Calendar?
-    ) {
-        if(newFirstVisibleDay != oldFirstVisibleDay)
-        {
-            weekView?.goToToday()
-        }
     }
     //endregion
 
