@@ -1,43 +1,131 @@
 package com.example.doma
 
+import android.content.Context
+import android.os.Build
 import android.os.Bundle
+import android.transition.Slide
+import android.transition.TransitionManager
+import android.view.Gravity
+import android.view.LayoutInflater
 import android.view.View
-import android.widget.Toast
-import com.alamkanak.weekview.WeekView
+import android.view.inputmethod.InputMethodManager
+import android.widget.*
+import androidx.annotation.RequiresApi
 import com.alamkanak.weekview.WeekViewEvent
-import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_schedule.*
+import kotlinx.android.synthetic.main.popup_scedule.*
 import java.util.*
+
 
 class ScheduleActivityBasic : ScheduleActivityBase() {
 
+    private val events: MutableList<WeekViewEvent> = ArrayList()
+    var thisYear = 0
+    private var thisMonth = 0
+
+    @RequiresApi(Build.VERSION_CODES.KITKAT)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+
         val add: View = findViewById(R.id.addEvent)
-                add.setOnClickListener { view ->
-                Snackbar.make(view, "Here's a Snackbar", Snackbar.LENGTH_LONG)
-                    .setAction("Action", null)
-                    .show()
+        add.setOnClickListener {
+//region Popup Initialize
+            // Initialize a new layout inflater instance
+            val inflater: LayoutInflater = getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+
+            // Inflate a custom view using layout inflater
+            val view = inflater.inflate(R.layout.popup_scedule,null)
+
+            // Initialize a new instance of popup window
+            val popupWindow = PopupWindow(
+                view, // Custom view to show in popup window
+                LinearLayout.LayoutParams.WRAP_CONTENT, // Width of popup window
+                LinearLayout.LayoutParams.WRAP_CONTENT // Window height
+            )
+
+            // Set an elevation for the popup window
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                popupWindow.elevation = 10.0F
             }
+
+
+            // If API level 23 or higher then execute the code
+            if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
+                // Create a new slide animation for popup window enter transition
+                val slideIn = Slide()
+                slideIn.slideEdge = Gravity.TOP
+                popupWindow.enterTransition = slideIn
+
+                // Slide animation for popup window exit transition
+                val slideOut = Slide()
+                slideOut.slideEdge = Gravity.RIGHT
+                popupWindow.exitTransition = slideOut
+            }
+            // Set a click listener for popup's button widget
+            val buttonPopup = view.findViewById<Button>(R.id.btnCancel)
+            buttonPopup.setOnClickListener {
+                // Dismiss the popup window
+                popupWindow.dismiss()
+            }
+//endregion
+
+            // Get the widgets reference from custom view
+            val tbDate = view.findViewById<TextView>(R.id.tbDate).text.toString()
+            val date = Integer.parseInt(tbDate)
+            val tbStart = view.findViewById<TextView>(R.id.tbStart).text.toString()
+            val start = Integer.parseInt(tbStart)
+            val btnBook = view.findViewById<Button>(R.id.btnBook)
+
+            btnBook.setOnClickListener{
+                //events.clear()
+
+                var startTime = Calendar.getInstance()
+                startTime[Calendar.HOUR_OF_DAY] = start
+                startTime[Calendar.MINUTE] = 0
+                startTime[Calendar.MONTH] = thisMonth - 1
+                startTime[Calendar.YEAR] = thisYear
+                var endTime = startTime.clone() as Calendar
+                endTime.add(Calendar.HOUR, 1)
+                endTime[Calendar.MONTH] =  thisMonth - 1
+                var event = WeekViewEvent(1, "Me", startTime, endTime)
+                event.color = R.color.event_color_01
+                events.add(event)
+
+                //onMonthChange(thisYear, thisMonth)
+                popupWindow.dismiss()
+            }
+
+            // Finally, show the popup window on app
+            TransitionManager.beginDelayedTransition(schedule)
+            popupWindow.showAtLocation(
+                weekView, // Location to display popup window
+                Gravity.CENTER, // Exact position of layout to display popup
+                0, // X offset
+                0 // Y offset
+            )
         }
+    }
+
 
     override fun onMonthChange(newYear: Int, newMonth: Int): List<WeekViewEvent> {
-        val events: MutableList<WeekViewEvent> = ArrayList()
+        thisMonth = newMonth
+        thisYear = newYear
 
+        //events.clear()
         //region Events
         var startTime = Calendar.getInstance()
         startTime[Calendar.HOUR_OF_DAY] = 3
         startTime[Calendar.MINUTE] = 0
         startTime[Calendar.MONTH] = newMonth - 1
-        startTime[Calendar.YEAR] = newYear
+        startTime[Calendar.YEAR] = 2020
         var endTime = startTime.clone() as Calendar
         endTime.add(Calendar.HOUR, 1)
         endTime[Calendar.MONTH] = newMonth - 1
-        var event = WeekViewEvent(1, "User 56", startTime, endTime)
-        event.color = R.color.event_color_01
+        var event = WeekViewEvent(1, "You", startTime, endTime)
+        event.color = R.color.event_color_02
         events.add(event)
-
+/*
         startTime = Calendar.getInstance()
         startTime[Calendar.HOUR_OF_DAY] = 6
         startTime[Calendar.MINUTE] = 30
@@ -52,7 +140,7 @@ class ScheduleActivityBasic : ScheduleActivityBase() {
 
         event = WeekViewEvent(2, "User66", startTime, endTime)
         event.color = R.color.event_color_02
-        events.add(event)
+        events.add(event)*/
 
         return events
         //endregion

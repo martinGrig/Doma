@@ -46,6 +46,7 @@ abstract class ScheduleActivityBase : AppCompatActivity(), EventClickListener,
         weekView!!.scrollListener = this
 
 
+
     }
 
     //region Menu Events
