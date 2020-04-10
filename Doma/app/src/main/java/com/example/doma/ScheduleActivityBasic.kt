@@ -71,9 +71,9 @@ class ScheduleActivityBasic : ScheduleActivityBase() {
                 // Dismiss the popup window
                 popupWindow.dismiss()
             }
-
-            val snack = Snackbar.make(it,"$thisYear Month: $thisMonth",Snackbar.LENGTH_LONG)
+            val snack = Snackbar.make(it,events.size.toString(),Snackbar.LENGTH_LONG)
             snack.show()
+
 //endregion
 
             val tbDate = view.findViewById<TextView>(R.id.tbDate).text.toString()
@@ -85,19 +85,21 @@ class ScheduleActivityBasic : ScheduleActivityBase() {
             btnBook.setOnClickListener{
                 //events.clear()
 
-
-
                 var startTime = Calendar.getInstance()
-                startTime.set(thisYear, thisMonth, date, start, 0)
                 var endTime = Calendar.getInstance()
-                endTime.set(thisYear, thisMonth, date, start+2, 0)
 
-                var event = WeekViewEvent(3, "Username", startTime, endTime)
+                startTime.set(thisYear, thisMonth-1, 11, 4, 0)
+                endTime.set(thisYear, thisMonth-1, 11, 6, 0)
+
+                var event = WeekViewEvent(2, "Me", startTime, endTime)
                 event.color = R.color.event_color_01
                 events.add(event)
 
+                onMonthChange(thisYear, thisMonth)
 
-                //onMonthChange(thisYear, thisMonth)
+                val snack1 = Snackbar.make(findViewById(R.id.weekView),events.size.toString(),Snackbar.LENGTH_LONG)
+                snack1.show()
+
                 popupWindow.dismiss()
             }
 
@@ -108,22 +110,38 @@ class ScheduleActivityBasic : ScheduleActivityBase() {
 
 
     override fun onMonthChange(newYear: Int, newMonth: Int): List<WeekViewEvent> {
-        thisMonth = newMonth -1
+        thisMonth = newMonth
         thisYear = newYear
+
+        val snack1 = Snackbar.make(findViewById(R.id.weekView),events.size.toString(),Snackbar.LENGTH_LONG)
+        snack1.show()
 
         //region Events
         var startTime = Calendar.getInstance()
+        var endTime = Calendar.getInstance()
+
+        startTime.set(thisYear, thisMonth-1, 12, 2, 0)
+        endTime.set(thisYear, thisMonth-1, 12, 3, 0)
+
+        var event = WeekViewEvent(events.size.toLong(), "Username", startTime, endTime)
+        event.color = R.color.event_color_01
+        events.add(event)
+
+       startTime = Calendar.getInstance()
         startTime[Calendar.HOUR_OF_DAY] = 3
         startTime[Calendar.MINUTE] = 0
         startTime[Calendar.MONTH] = newMonth - 1
         startTime[Calendar.YEAR] = 2020
-        var endTime = startTime.clone() as Calendar
+        endTime = startTime.clone() as Calendar
         endTime.add(Calendar.HOUR, 1)
         endTime[Calendar.MONTH] = newMonth - 1
-        var event = WeekViewEvent(1, "You", startTime, endTime)
+        event = WeekViewEvent(events.size.toLong(), "You", startTime, endTime)
         event.color = R.color.event_color_02
         events.add(event)
 
+        val snack2 = Snackbar.make(findViewById(R.id.weekView),events.size.toString(),Snackbar.LENGTH_LONG)
+        snack2.show()
+/*
         startTime = Calendar.getInstance()
         startTime[Calendar.HOUR_OF_DAY] = 6
         startTime[Calendar.MINUTE] = 30
@@ -138,7 +156,7 @@ class ScheduleActivityBasic : ScheduleActivityBase() {
 
         event = WeekViewEvent(2, "User66", startTime, endTime)
         event.color = R.color.event_color_02
-        events.add(event)
+        events.add(event)*/
 
         return events
         //endregion

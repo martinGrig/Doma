@@ -13,6 +13,7 @@ import com.alamkanak.weekview.MonthLoader.MonthChangeListener
 import com.alamkanak.weekview.WeekView
 import com.alamkanak.weekview.WeekView.*
 import com.alamkanak.weekview.WeekViewEvent
+import com.alamkanak.weekview.WeekViewLoader
 import com.google.android.material.snackbar.Snackbar
 import java.text.SimpleDateFormat
 import java.util.*
@@ -73,16 +74,6 @@ abstract class ScheduleActivityBase : AppCompatActivity(), EventClickListener,
         }
     }
 
-    private fun getEventTitle(time: Calendar): String {
-        return String.format(
-            "Event of %02d:%02d %s/%d",
-            time[Calendar.HOUR_OF_DAY],
-            time[Calendar.MINUTE],
-            time[Calendar.MONTH] + 1,
-            time[Calendar.DAY_OF_MONTH]
-        )
-    }
-
     override fun onEventClick(event: WeekViewEvent, eventRect: RectF) {
         Toast.makeText(this, "Clicked " + event.name, Toast.LENGTH_SHORT).show()
     }
@@ -92,7 +83,7 @@ abstract class ScheduleActivityBase : AppCompatActivity(), EventClickListener,
     }
 
     override fun onEmptyViewLongPress(time: Calendar) {
-        Toast.makeText(this, "Empty view long pressed: " + getEventTitle(time), Toast.LENGTH_SHORT)
+        Toast.makeText(this, "Empty view long pressed: ", Toast.LENGTH_SHORT)
             .show()
     }
 
@@ -102,9 +93,11 @@ abstract class ScheduleActivityBase : AppCompatActivity(), EventClickListener,
     //endregion
 
     //region Create Events
-
-
+/*    private fun EventUpdate() {
+        if(mo;
+    }*/
     //endregion
+
 }
 
 
