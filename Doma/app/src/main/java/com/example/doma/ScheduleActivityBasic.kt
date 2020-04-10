@@ -8,12 +8,11 @@ import android.transition.TransitionManager
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
-import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import androidx.annotation.RequiresApi
 import com.alamkanak.weekview.WeekViewEvent
+import com.google.firebase.database.FirebaseDatabase
 import kotlinx.android.synthetic.main.activity_schedule.*
-import kotlinx.android.synthetic.main.popup_scedule.*
 import java.util.*
 
 
@@ -80,17 +79,31 @@ class ScheduleActivityBasic : ScheduleActivityBase() {
             btnBook.setOnClickListener{
                 //events.clear()
 
-                var startTime = Calendar.getInstance()
+                /*var startTime = Calendar.getInstance()
                 startTime[Calendar.HOUR_OF_DAY] = start
                 startTime[Calendar.MINUTE] = 0
                 startTime[Calendar.MONTH] = thisMonth - 1
                 startTime[Calendar.YEAR] = thisYear
                 var endTime = startTime.clone() as Calendar
                 endTime.add(Calendar.HOUR, 1)
-                endTime[Calendar.MONTH] =  thisMonth - 1
-                var event = WeekViewEvent(1, "Me", startTime, endTime)
+                endTime[Calendar.MONTH] =  thisMonth - 1*/
+
+                var startTime = Calendar.getInstance()
+                var endTime = Calendar.getInstance()
+
+                startTime.set(thisYear, thisMonth-1, 12, 2, 0)
+                endTime.set(thisYear, thisMonth-1, 12, 3, 0)
+                var event = CustomEvent(11, "WASHERE", startTime, endTime)
+                event.id = 12
+                event.startTime = startTime
+                event.endTime = endTime
+                event.name = "Washer"
                 event.color = R.color.event_color_01
                 events.add(event)
+
+                var firebaseDatabase = FirebaseDatabase.getInstance()
+                var databaseReference = firebaseDatabase.getReference()
+                databaseReference.child("events").push().setValue(event)
 
                 //onMonthChange(thisYear, thisMonth)
                 popupWindow.dismiss()
