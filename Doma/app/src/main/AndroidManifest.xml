@@ -10,6 +10,7 @@
         android:roundIcon="@mipmap/houseicon_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
         <activity
             android:name=".DrawerNavigationActivity"
             android:label="@string/title_activity_drawer_navigation"

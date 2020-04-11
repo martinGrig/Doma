@@ -2,10 +2,7 @@ package com.example.doma
 
 import android.graphics.RectF
 import android.os.Bundle
-import android.util.TypedValue
 import android.view.Menu
-import android.view.MenuItem
-import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.alamkanak.weekview.DateTimeInterpreter
@@ -13,10 +10,9 @@ import com.alamkanak.weekview.MonthLoader.MonthChangeListener
 import com.alamkanak.weekview.WeekView
 import com.alamkanak.weekview.WeekView.*
 import com.alamkanak.weekview.WeekViewEvent
-import com.alamkanak.weekview.WeekViewLoader
-import com.google.android.material.snackbar.Snackbar
 import java.text.SimpleDateFormat
 import java.util.*
+
 
 abstract class ScheduleActivityBase : AppCompatActivity(), EventClickListener,
     MonthChangeListener, EventLongPressListener, EmptyViewLongPressListener {
@@ -41,6 +37,7 @@ abstract class ScheduleActivityBase : AppCompatActivity(), EventClickListener,
 
         // Set long press listener for empty view
         weekView!!.emptyViewLongPressListener = this
+
     }
 
     //region Menu Events
@@ -93,10 +90,10 @@ abstract class ScheduleActivityBase : AppCompatActivity(), EventClickListener,
     //endregion
 
     //region Create Events
-/*    private fun EventUpdate() {
-        if(mo;
-    }*/
-    //endregion
+
+    public fun GetWeekView(): WeekView? {
+    return weekView
+    }
 
 }
 
