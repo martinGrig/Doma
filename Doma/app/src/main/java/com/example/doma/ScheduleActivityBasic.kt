@@ -1,17 +1,12 @@
 package com.example.doma
 
-import android.content.Context
-import android.os.Build
+import android.app.AlertDialog
 import android.os.Bundle
-import android.transition.Slide
-import android.transition.TransitionManager
-import android.view.Gravity
-import android.view.LayoutInflater
 import android.view.View
 import android.widget.*
-import androidx.annotation.RequiresApi
 import com.alamkanak.weekview.WeekViewEvent
 import com.google.firebase.database.FirebaseDatabase
+<<<<<<< HEAD
 import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.PopupWindow
@@ -22,6 +17,8 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
 import kotlinx.android.synthetic.main.activity_schedule.*
+=======
+>>>>>>> 850ad951b43136d96e7367634728e3129c4c8110
 import java.util.*
 
 
@@ -31,66 +28,27 @@ class ScheduleActivityBasic : ScheduleActivityBase() {
     var thisYear = 0
     private var thisMonth = 0
 
-    @RequiresApi(Build.VERSION_CODES.KITKAT)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
 
         val add: View = findViewById(R.id.addEvent)
         add.setOnClickListener {
 
-//region Popup Initialize
-            // Initialize a new layout inflater instance
-            val inflater: LayoutInflater = getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
 
-            // Inflate a custom view using layout inflater
-            val view = inflater.inflate(R.layout.popup_scedule,null)
-
-            // Initialize a new instance of popup window
-            val popupWindow = PopupWindow(
-                view, // Custom view to show in popup window
-                LinearLayout.LayoutParams.WRAP_CONTENT, // Width of popup window
-                LinearLayout.LayoutParams.WRAP_CONTENT // Window height
-            )
-
-            // Set an elevation for the popup window
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                popupWindow.elevation = 10.0F
-            }
+            val dialogBuilder: AlertDialog = AlertDialog.Builder(this).create()
+            val inflater2 = this.layoutInflater
+            val dialogView: View = inflater2.inflate(R.layout.popup_scedule, null)
+            dialogBuilder.setView(dialogView)
+            dialogBuilder.show()
 
 
-            // If API level 23 or higher then execute the code
-            if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
-                // Create a new slide animation for popup window enter transition
-                val slideIn = Slide()
-                slideIn.slideEdge = Gravity.TOP
-                popupWindow.enterTransition = slideIn
-
-                // Slide animation for popup window exit transition
-                val slideOut = Slide()
-                slideOut.slideEdge = Gravity.RIGHT
-                popupWindow.exitTransition = slideOut
-            }
-            // Set a click listener for popup's button widget
-            val buttonPopup = view.findViewById<Button>(R.id.btnCancel)
-            buttonPopup.setOnClickListener {
-                // Dismiss the popup window
-                popupWindow.dismiss()
-            }
-
-            val snack = Snackbar.make(it,"$thisYear Month: $thisMonth",Snackbar.LENGTH_LONG)
-            snack.show()
-//endregion
-
-            val tbDate = view.findViewById<TextView>(R.id.tbDate).text.toString()
-            val date = Integer.parseInt(tbDate)
-            val tbStart = view.findViewById<TextView>(R.id.tbStart).text.toString()
-            val start = Integer.parseInt(tbStart)
-            val btnBook = view.findViewById<Button>(R.id.btnBook)
+            val btnBook = dialogView.findViewById<Button>(R.id.btnBook)
+            val buttonPopup = dialogView.findViewById<Button>(R.id.btnCancel)
 
             btnBook.setOnClickListener{
                 //events.clear()
 
+<<<<<<< HEAD
                 /*var startTime = Calendar.getInstance()
                 startTime[Calendar.HOUR_OF_DAY] = start
                 startTime[Calendar.MINUTE] = 0
@@ -99,14 +57,22 @@ class ScheduleActivityBasic : ScheduleActivityBase() {
                 var endTime = startTime.clone() as Calendar
                 endTime.add(Calendar.HOUR, 1)
                 endTime[Calendar.MONTH] =  thisMonth - 1*/
+=======
+                val tbDate = dialogView.findViewById<TextView>(R.id.tbDate).text.toString()
+                val date = Integer.parseInt(tbDate)
+                val tbStart = dialogView.findViewById<TextView>(R.id.tbStart).text.toString()
+                val start = Integer.parseInt(tbStart)
+>>>>>>> 850ad951b43136d96e7367634728e3129c4c8110
 
                 var startTime = Calendar.getInstance()
                 var endTime = Calendar.getInstance()
 
-                startTime.set(thisYear, thisMonth-1, 12, 2, 0)
-                endTime.set(thisYear, thisMonth-1, 12, 3, 0)
-                var event = CustomEvent(11, "WASHERE", startTime, endTime)
-                event.id = 12
+                startTime.set(thisYear, thisMonth-1, date, start, 0)
+                endTime.set(thisYear, thisMonth-1, date, start+2, 0)
+
+
+                var event = CustomEvent(11, "WASHER", startTime, endTime)
+                event.id = events.size.toLong()
                 event.startTime = startTime
                 event.endTime = endTime
                 event.name = "Washer"
@@ -116,6 +82,7 @@ class ScheduleActivityBasic : ScheduleActivityBase() {
                 var firebaseDatabase = FirebaseDatabase.getInstance()
                 var databaseReference = firebaseDatabase.getReference()
                 databaseReference.child("events").push().setValue(event)
+<<<<<<< HEAD
 
 
                 /*var startTime = Calendar.getInstance()
@@ -127,14 +94,22 @@ class ScheduleActivityBasic : ScheduleActivityBase() {
                 event.color = R.color.event_color_01*/
                 events.add(event)
 
+=======
+>>>>>>> 850ad951b43136d96e7367634728e3129c4c8110
 
-                //onMonthChange(thisYear, thisMonth)
-                popupWindow.dismiss()
+                GetWeekView()?.notifyDatasetChanged()
+                dialogBuilder.dismiss()
             }
 
+<<<<<<< HEAD
             TransitionManager.beginDelayedTransition(schedule)
             popupWindow.showAtLocation(weekView, Gravity.CENTER, 0, 0)
 
+=======
+            buttonPopup.setOnClickListener {
+                dialogBuilder.dismiss()
+            }
+>>>>>>> 850ad951b43136d96e7367634728e3129c4c8110
         }
 
         val firebaseDatabase = FirebaseDatabase.getInstance();
@@ -159,6 +134,7 @@ class ScheduleActivityBasic : ScheduleActivityBase() {
 
 
     override fun onMonthChange(newYear: Int, newMonth: Int): List<WeekViewEvent> {
+<<<<<<< HEAD
         thisMonth = newMonth -1
         thisYear = newYear
 
@@ -208,128 +184,33 @@ class ScheduleActivityBasic : ScheduleActivityBase() {
         val events: MutableList<WeekViewEvent> =
             ArrayList()
 
+=======
+        var cal = Calendar.getInstance()
+        if (cal.get(Calendar.MONTH) + 1 == newMonth) {
+>>>>>>> 850ad951b43136d96e7367634728e3129c4c8110
 
+            thisMonth = newMonth
+            thisYear = newYear
 
-        startTime = Calendar.getInstance()
-        startTime[Calendar.HOUR_OF_DAY] = 4
-        startTime[Calendar.MINUTE] = 20
-        startTime[Calendar.MONTH] = newMonth - 1
-        startTime[Calendar.YEAR] = newYear
-        endTime = startTime.clone() as Calendar
-        endTime[Calendar.HOUR_OF_DAY] = 5
-        endTime[Calendar.MINUTE] = 0
-        event = WeekViewEvent(10, getEventTitle(startTime), startTime, endTime)
-        event.color = resources.getColor(R.color.event_color_03)
-        events.add(event)
+            var startTime = Calendar.getInstance()
+            var endTime = Calendar.getInstance()
 
-        startTime = Calendar.getInstance()
-        startTime[Calendar.HOUR_OF_DAY] = 5
-        startTime[Calendar.MINUTE] = 30
-        startTime[Calendar.MONTH] = newMonth - 1
-        startTime[Calendar.YEAR] = newYear
-        endTime = startTime.clone() as Calendar
-        endTime.add(Calendar.HOUR_OF_DAY, 2)
-        endTime[Calendar.MONTH] = newMonth - 1
-        event = WeekViewEvent(2, getEventTitle(startTime), startTime, endTime)
-        event.color = resources.getColor(R.color.event_color_02)
-        events.add(event)
+            startTime.set(thisYear, newMonth-1, 13, 6, 0)
+            endTime.set(thisYear, newMonth-1, 13, 8, 0)
 
-        startTime = Calendar.getInstance()
-        startTime[Calendar.HOUR_OF_DAY] = 5
-        startTime[Calendar.MINUTE] = 0
-        startTime[Calendar.MONTH] = newMonth - 1
-        startTime[Calendar.YEAR] = newYear
-        startTime.add(Calendar.DATE, 1)
-        endTime = startTime.clone() as Calendar
-        endTime.add(Calendar.HOUR_OF_DAY, 3)
-        endTime[Calendar.MONTH] = newMonth - 1
-        event = WeekViewEvent(3, getEventTitle(startTime), startTime, endTime)
-        event.color = resources.getColor(R.color.event_color_03)
-        events.add(event)
+            var event = WeekViewEvent(events.size.toLong(), "You", startTime, endTime)
+            event.color = R.color.event_color_01
+            events.add(event)
 
-        startTime = Calendar.getInstance()
-        startTime[Calendar.DAY_OF_MONTH] = 15
-        startTime[Calendar.HOUR_OF_DAY] = 3
-        startTime[Calendar.MINUTE] = 0
-        startTime[Calendar.MONTH] = newMonth - 1
-        startTime[Calendar.YEAR] = newYear
-        endTime = startTime.clone() as Calendar
-        endTime.add(Calendar.HOUR_OF_DAY, 3)
-        event = WeekViewEvent(4, getEventTitle(startTime), startTime, endTime)
-        event.color = resources.getColor(R.color.event_color_04)
-        events.add(event)
+            startTime.set(thisYear, thisMonth-1, 11, 1, 0)
+            endTime.set(thisYear, thisMonth-1, 11, 4, 0)
 
-        startTime = Calendar.getInstance()
-        startTime[Calendar.DAY_OF_MONTH] = 1
-        startTime[Calendar.HOUR_OF_DAY] = 3
-        startTime[Calendar.MINUTE] = 0
-        startTime[Calendar.MONTH] = newMonth - 1
-        startTime[Calendar.YEAR] = newYear
-        endTime = startTime.clone() as Calendar
-        endTime.add(Calendar.HOUR_OF_DAY, 3)
-        event = WeekViewEvent(5, getEventTitle(startTime), startTime, endTime)
-        event.color = resources.getColor(R.color.event_color_01)
-        events.add(event)
+            event = WeekViewEvent(events.size.toLong(), "User66", startTime, endTime)
+            event.color = R.color.event_color_03
+            events.add(event)
 
-        startTime = Calendar.getInstance()
-        startTime[Calendar.DAY_OF_MONTH] = startTime.getActualMaximum(Calendar.DAY_OF_MONTH)
-        startTime[Calendar.HOUR_OF_DAY] = 15
-        startTime[Calendar.MINUTE] = 0
-        startTime[Calendar.MONTH] = newMonth - 1
-        startTime[Calendar.YEAR] = newYear
-        endTime = startTime.clone() as Calendar
-        endTime.add(Calendar.HOUR_OF_DAY, 3)
-        event = WeekViewEvent(5, getEventTitle(startTime), startTime, endTime)
-        event.color = resources.getColor(R.color.event_color_02)
-        events.add(event)
-
-        //AllDay event
-        startTime = Calendar.getInstance()
-        startTime[Calendar.HOUR_OF_DAY] = 0
-        startTime[Calendar.MINUTE] = 0
-        startTime[Calendar.MONTH] = newMonth - 1
-        startTime[Calendar.YEAR] = newYear
-        endTime = startTime.clone() as Calendar
-        endTime.add(Calendar.HOUR_OF_DAY, 23)
-        event = WeekViewEvent(7, getEventTitle(startTime), startTime, endTime)
-        event.color = resources.getColor(R.color.event_color_04)
-        events.add(event)
-        events.add(event)
-        startTime = Calendar.getInstance()
-        startTime[Calendar.DAY_OF_MONTH] = 8
-        startTime[Calendar.HOUR_OF_DAY] = 2
-        startTime[Calendar.MINUTE] = 0
-        startTime[Calendar.MONTH] = newMonth - 1
-        startTime[Calendar.YEAR] = newYear
-        endTime = startTime.clone() as Calendar
-        endTime[Calendar.DAY_OF_MONTH] = 10
-        endTime[Calendar.HOUR_OF_DAY] = 23
-        event = WeekViewEvent(8, getEventTitle(startTime), startTime, endTime)
-        event.color = resources.getColor(R.color.event_color_03)
-        events.add(event)
-
-        // All day event until 00:00 next day
-        startTime = Calendar.getInstance()
-        startTime[Calendar.DAY_OF_MONTH] = 10
-        startTime[Calendar.HOUR_OF_DAY] = 0
-        startTime[Calendar.MINUTE] = 0
-        startTime[Calendar.SECOND] = 0
-        startTime[Calendar.MILLISECOND] = 0
-        startTime[Calendar.MONTH] = newMonth - 1
-        startTime[Calendar.YEAR] = newYear
-        endTime = startTime.clone() as Calendar
-        endTime[Calendar.DAY_OF_MONTH] = 11
-        event = WeekViewEvent(8, getEventTitle(startTime), startTime, endTime)
-        event.color = resources.getColor(R.color.event_color_01)
-        events.add(event)
-        return events
+            return events
+        }
+        return emptyList()
     }
-      override fun onFirstVisibleDayChanged(
-           newFirstVisibleDay: Calendar?,
-           oldFirstVisibleDay: Calendar
-       ) {
-           if (newFirstVisibleDay != oldFirstVisibleDay)
-           {
-               Toast.makeText(this, "Not Today", Toast.LENGTH_SHORT).show()
-           }
-       }*/
+}

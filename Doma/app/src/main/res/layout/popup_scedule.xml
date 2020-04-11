@@ -21,8 +21,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
-        android:inputType="textPersonName"
-        android:text="4" />
+        android:inputType="number" />
 
     <TextView
         android:id="@+id/text_view2"
@@ -36,8 +35,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
-        android:inputType="textPersonName"
-        android:text="7" />
+        android:inputType="number" />
 
     <Button
         android:id="@+id/btnCancel"
