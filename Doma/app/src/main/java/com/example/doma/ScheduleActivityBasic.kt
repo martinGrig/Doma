@@ -8,20 +8,19 @@ import android.transition.TransitionManager
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
-<<<<<<< HEAD
 import android.widget.*
 import androidx.annotation.RequiresApi
 import com.alamkanak.weekview.WeekViewEvent
 import com.google.firebase.database.FirebaseDatabase
-=======
 import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.PopupWindow
 import android.widget.TextView
-import androidx.annotation.RequiresApi
-import com.alamkanak.weekview.WeekViewEvent
+import com.alamkanak.weekview.WeekView
 import com.google.android.material.snackbar.Snackbar
->>>>>>> f14203988849a17afb66021c4ae3b33402047d91
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.ValueEventListener
 import kotlinx.android.synthetic.main.activity_schedule.*
 import java.util.*
 
@@ -92,7 +91,6 @@ class ScheduleActivityBasic : ScheduleActivityBase() {
             btnBook.setOnClickListener{
                 //events.clear()
 
-<<<<<<< HEAD
                 /*var startTime = Calendar.getInstance()
                 startTime[Calendar.HOUR_OF_DAY] = start
                 startTime[Calendar.MINUTE] = 0
@@ -118,19 +116,17 @@ class ScheduleActivityBasic : ScheduleActivityBase() {
                 var firebaseDatabase = FirebaseDatabase.getInstance()
                 var databaseReference = firebaseDatabase.getReference()
                 databaseReference.child("events").push().setValue(event)
-=======
 
 
-                var startTime = Calendar.getInstance()
+                /*var startTime = Calendar.getInstance()
                 startTime.set(thisYear, thisMonth, date, start, 0)
                 var endTime = Calendar.getInstance()
                 endTime.set(thisYear, thisMonth, date, start+2, 0)
 
                 var event = WeekViewEvent(3, "Username", startTime, endTime)
-                event.color = R.color.event_color_01
+                event.color = R.color.event_color_01*/
                 events.add(event)
 
->>>>>>> f14203988849a17afb66021c4ae3b33402047d91
 
                 //onMonthChange(thisYear, thisMonth)
                 popupWindow.dismiss()
@@ -138,7 +134,27 @@ class ScheduleActivityBasic : ScheduleActivityBase() {
 
             TransitionManager.beginDelayedTransition(schedule)
             popupWindow.showAtLocation(weekView, Gravity.CENTER, 0, 0)
+
         }
+
+        val firebaseDatabase = FirebaseDatabase.getInstance();
+        val reference = firebaseDatabase.getReference()
+        reference.child("event").addValueEventListener(object : ValueEventListener {
+            override fun onCancelled(p0: DatabaseError) {
+                // TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+            }
+
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                val children = dataSnapshot.children
+
+                children.forEach {
+                    var event = it.getValue(CustomEvent::class.java)
+                    events.add(event!!)
+                }
+                /*WeekView.adapter.notifyDataSetChanged()*/
+            }
+        })
+
     }
 
 
@@ -179,6 +195,10 @@ class ScheduleActivityBasic : ScheduleActivityBase() {
         //endregion
     }
 }
+
+
+
+
 /*
     override fun onMonthChange(
         newYear: Int,
