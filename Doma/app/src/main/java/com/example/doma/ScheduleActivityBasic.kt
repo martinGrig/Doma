@@ -1,21 +1,20 @@
 package com.example.doma
 
+//import android.R
 import android.app.AlertDialog
+import android.app.TimePickerDialog
+import android.app.TimePickerDialog.OnTimeSetListener
+import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.widget.*
+import androidx.annotation.RequiresApi
 import com.alamkanak.weekview.WeekViewEvent
-import com.google.firebase.database.FirebaseDatabase
-import android.widget.Button
-import android.widget.LinearLayout
-import android.widget.PopupWindow
-import android.widget.TextView
-import com.alamkanak.weekview.WeekView
-import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
-import kotlinx.android.synthetic.main.activity_schedule.*
+import java.text.SimpleDateFormat
 import java.util.*
 
 
@@ -24,38 +23,89 @@ class ScheduleActivityBasic : ScheduleActivityBase() {
     private val events: MutableList<WeekViewEvent> = ArrayList()
     var thisYear = 0
     private var thisMonth = 0
+    var timePick: TimePickerDialog? = null
 
+
+    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         val add: View = findViewById(R.id.addEvent)
         add.setOnClickListener {
 
-
+//region Initializing Values
             val dialogBuilder: AlertDialog = AlertDialog.Builder(this).create()
             val inflater2 = this.layoutInflater
             val dialogView: View = inflater2.inflate(R.layout.popup_scedule, null)
             dialogBuilder.setView(dialogView)
             dialogBuilder.show()
 
-
             val btnBook = dialogView.findViewById<Button>(R.id.btnBook)
-            val buttonPopup = dialogView.findViewById<Button>(R.id.btnCancel)
+            val tbStart = dialogView.findViewById<TextView>(R.id.tbStart)
+            tbStart.showSoftInputOnFocus = false
+            val tbEnd = dialogView.findViewById<TextView>(R.id.tbEnd)
+            tbEnd.showSoftInputOnFocus = false
+            var startBool = false
+            var endBool = false
+            var startT = 0
+            var endT = 0
+            var date = 0
+            val tbDate: Spinner = dialogView.findViewById<Spinner>(R.id.date_spinner)
+            ArrayAdapter.createFromResource(this, R.array.date_array, R.layout.spinner_item).also { adapter ->
+                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+                tbDate.adapter = adapter
+            }
+//endregion
+
+
+            tbDate.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
+                override fun onNothingSelected(parent: AdapterView<*>?) {
+                    val cal = Calendar.getInstance()
+                    date = cal.get(Calendar.DAY_OF_MONTH)
+                }
+                override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                    val cal = Calendar.getInstance()
+                    date = cal.get(Calendar.DAY_OF_MONTH) + position
+                }
+            }
+            tbStart.setOnClickListener{
+                var cal = Calendar.getInstance();
+                val timeSetListener = OnTimeSetListener { view, hour, minute ->
+                    cal.set(Calendar.HOUR_OF_DAY, hour)
+                    cal.set(Calendar.MINUTE, minute)
+
+                    tbStart.text = SimpleDateFormat("HH:mm").format(cal.time)
+
+                        startT = cal.get(Calendar.HOUR_OF_DAY)*60 + cal.get(Calendar.MINUTE)
+                }
+                TimePickerDialog(this, timeSetListener, cal.get(Calendar.HOUR_OF_DAY), cal.get(Calendar.MINUTE), true).show()
+
+                startBool = true;
+            }
+            tbEnd.setOnClickListener{
+                var cal = Calendar.getInstance();
+                val timeSetListener = OnTimeSetListener { view, hour, minute ->
+                    cal.set(Calendar.HOUR_OF_DAY, hour)
+                    cal.set(Calendar.MINUTE, minute)
+
+                    tbEnd.text = SimpleDateFormat("HH:mm").format(cal.time)
+
+                    endT = cal.get(Calendar.HOUR_OF_DAY)*60 + cal.get(Calendar.MINUTE)
+                }
+                TimePickerDialog(this, timeSetListener, cal.get(Calendar.HOUR_OF_DAY), cal.get(Calendar.MINUTE), true).show()
+
+                endBool = true;
+            }
 
             btnBook.setOnClickListener {
-                //events.clear()
-                val tbDate = dialogView.findViewById<TextView>(R.id.tbDate).text.toString()
-                val date = Integer.parseInt(tbDate)
-                val tbStart = dialogView.findViewById<TextView>(R.id.tbStart).text.toString()
-                val start = Integer.parseInt(tbStart)
-                val tbEnd = dialogView.findViewById<TextView>(R.id.tbEnd).text.toString()
-                val end = Integer.parseInt(tbEnd)
 
-                CreateEvent(date, start, end)
-                dialogBuilder.dismiss()
+              if ( startBool && endBool && startT+180 >= endT && startT < endT)
+              {
+                    CreateEvent(date, startT, endT)
+                    dialogBuilder.dismiss()
+                }
             }
         }
-
         val firebaseDatabase = FirebaseDatabase.getInstance();
         val reference = firebaseDatabase.getReference()
         reference.child("event").addValueEventListener(object : ValueEventListener {
@@ -73,20 +123,25 @@ class ScheduleActivityBasic : ScheduleActivityBase() {
                 /*WeekView.adapter.notifyDataSetChanged()*/
             }
         })
-
     }
+
     private fun monthFromDate(): Int {
         val calendar = Calendar.getInstance()
         return calendar.get(Calendar.MONTH)
     }
 
     private fun CreateEvent(date: Int, start: Int, end: Int){
-       if(CheckEventTime(date, start, end) && start+2 >= end) {
+       if(CheckEventTime(date, start, end) && start+180 >= end && start < end) {
             var startTime = Calendar.getInstance()
             var endTime = Calendar.getInstance()
 
-            startTime.set(thisYear, thisMonth - 1, date, start, 0)
-            endTime.set(thisYear, thisMonth - 1, date, end, 0)
+            var hour : Int = start/60
+            var minute = start - hour*60
+            startTime.set(thisYear, thisMonth - 1, date, hour, minute)
+
+           hour = end/60
+           minute = end - hour*60
+            endTime.set(thisYear, thisMonth - 1, date, hour, minute)
 
             var event = CustomEvent(11, "WASHER", startTime, endTime)
             event.id = events.size.toLong()
@@ -96,9 +151,9 @@ class ScheduleActivityBasic : ScheduleActivityBase() {
             event.color = R.color.event_color_01
             events.add(event)
 
-            var firebaseDatabase = FirebaseDatabase.getInstance()
+/*            var firebaseDatabase = FirebaseDatabase.getInstance()
             var databaseReference = firebaseDatabase.getReference()
-            databaseReference.child("events").push().setValue(event)
+            databaseReference.child("events").push().setValue(event)*/
 
             GetWeekView()?.notifyDatasetChanged()
         }
@@ -111,7 +166,7 @@ class ScheduleActivityBasic : ScheduleActivityBase() {
         var otherDate = it.startTime.get(Calendar.DAY_OF_MONTH)
 
             if (date == otherDate &&
-                !(start*60 >= otherEnd || end*60 <= otherStart))
+                !(start >= otherEnd || end <= otherStart))
             {
                 return false
             }
@@ -163,45 +218,3 @@ class ScheduleActivityBasic : ScheduleActivityBase() {
         //endregion
     }
 }
-
-
-
-
-
- /*   override fun onMonthChange(
-        newYear: Int,
-        newMonth: Int
-    ): List<WeekViewEvent> {
-
-        val events: MutableList<WeekViewEvent> =
-            ArrayList()
-
-=======
-        var cal = Calendar.getInstance()
-        if (cal.get(Calendar.MONTH) + 1 == newMonth) {
-
-            thisMonth = newMonth
-            thisYear = newYear
-
-            var startTime = Calendar.getInstance()
-            var endTime = Calendar.getInstance()
-
-            startTime.set(thisYear, newMonth-1, 13, 6, 0)
-            endTime.set(thisYear, newMonth-1, 13, 8, 0)
-
-            var event = WeekViewEvent(events.size.toLong(), "You", startTime, endTime)
-            event.color = R.color.event_color_01
-            events.add(event)
-
-            startTime.set(thisYear, thisMonth-1, 11, 1, 0)
-            endTime.set(thisYear, thisMonth-1, 11, 4, 0)
-
-            event = WeekViewEvent(events.size.toLong(), "User66", startTime, endTime)
-            event.color = R.color.event_color_03
-            events.add(event)
-
-            return events
-        }
-        return emptyList()
-    }
-}*/
