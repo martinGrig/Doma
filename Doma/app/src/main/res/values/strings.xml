@@ -24,4 +24,10 @@
 
     <string name="home_second">Home Second</string>
     <string name="menu_calendar">Calendar</string>
+
+    <string-array name="date_array">
+        <item>Today</item>
+        <item>Tomorrow</item>
+        <item>Day after Tomorrow</item>
+    </string-array>
 </resources>
