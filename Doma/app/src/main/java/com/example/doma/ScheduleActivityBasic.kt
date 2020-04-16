@@ -2,17 +2,6 @@ package com.example.doma
 
 //import android.R
 import android.app.AlertDialog
-<<<<<<< HEAD
-import android.content.Intent
-import android.os.Bundle
-import android.view.View
-import android.widget.Button
-import android.widget.TextView
-import android.widget.Toast
-import com.alamkanak.weekview.WeekViewEvent
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
-=======
 import android.app.TimePickerDialog
 import android.app.TimePickerDialog.OnTimeSetListener
 import android.os.Build
@@ -21,16 +10,11 @@ import android.view.View
 import android.widget.*
 import androidx.annotation.RequiresApi
 import com.alamkanak.weekview.WeekViewEvent
->>>>>>> c5139b2fa2164696bdbf84b77760b7fb574436cf
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
-<<<<<<< HEAD
-import java.security.Timestamp
-import java.sql.Time
-=======
->>>>>>> c5139b2fa2164696bdbf84b77760b7fb574436cf
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -44,10 +28,7 @@ class ScheduleActivityBasic : ScheduleActivityBase() {
     var timePick: TimePickerDialog? = null
 
 
-<<<<<<< HEAD
-=======
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
->>>>>>> c5139b2fa2164696bdbf84b77760b7fb574436cf
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -128,30 +109,29 @@ class ScheduleActivityBasic : ScheduleActivityBase() {
                 }
             }
         }
-<<<<<<< HEAD
 
     }
 
-=======
-        val firebaseDatabase = FirebaseDatabase.getInstance();
-        val reference = firebaseDatabase.getReference()
-        reference.child("event").addValueEventListener(object : ValueEventListener {
-            override fun onCancelled(p0: DatabaseError) {
-                // TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-            }
 
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                val children = dataSnapshot.children
+    /*val firebaseDatabase = FirebaseDatabase.getInstance();
+    val reference = firebaseDatabase.getReference()
+    reference.child("event").addValueEventListener(object : ValueEventListener {
+        override fun onCancelled(p0: DatabaseError) {
+            // TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        }
 
-                children.forEach {
-                    var event = it.getValue(CustomEvent::class.java)
-                    events.add(event!!)
-                }
-                /*WeekView.adapter.notifyDataSetChanged()*/
+        override fun onDataChange(dataSnapshot: DataSnapshot) {
+            val children = dataSnapshot.children
+
+            children.forEach {
+                var event = it.getValue(CustomEvent::class.java)
+                events.add(event!!)
             }
-        })
-    }
->>>>>>> c5139b2fa2164696bdbf84b77760b7fb574436cf
+            *//*WeekView.adapter.notifyDataSetChanged()*//*
+            }
+        })*/
+
+
 
     private fun monthFromDate(): Int {
         val calendar = Calendar.getInstance()
@@ -165,12 +145,10 @@ class ScheduleActivityBasic : ScheduleActivityBase() {
            var endTimestamp : java.sql.Timestamp
            var endTime = Calendar.getInstance()
 
-<<<<<<< HEAD
             startTime.set(thisYear, thisMonth - 1, date, start, 0)
             endTime.set(thisYear, thisMonth - 1, date, end, 0)
            startTimestamp = java.sql.Timestamp(thisYear, thisMonth - 1, date, start, 0, 0, 0)
            endTimestamp = java.sql.Timestamp(thisYear, thisMonth - 1, date, end, 0, 0, 0)
-=======
             var hour : Int = start/60
             var minute = start - hour*60
             startTime.set(thisYear, thisMonth - 1, date, hour, minute)
@@ -178,7 +156,6 @@ class ScheduleActivityBasic : ScheduleActivityBase() {
            hour = end/60
            minute = end - hour*60
             endTime.set(thisYear, thisMonth - 1, date, hour, minute)
->>>>>>> c5139b2fa2164696bdbf84b77760b7fb574436cf
 
            var event = CustomEvent(11, auth.currentUser!!.email.toString(), startTime, endTime)
             event.id = events.size.toLong()
@@ -190,9 +167,9 @@ class ScheduleActivityBasic : ScheduleActivityBase() {
            event.setEndTimeStamp(endTimestamp)
             events.add(event)
 
-/*            var firebaseDatabase = FirebaseDatabase.getInstance()
+            var firebaseDatabase = FirebaseDatabase.getInstance()
             var databaseReference = firebaseDatabase.getReference()
-            databaseReference.child("events").push().setValue(event)*/
+            databaseReference.child("events").push().setValue(event)
 
             GetWeekView()?.notifyDatasetChanged()
         }
