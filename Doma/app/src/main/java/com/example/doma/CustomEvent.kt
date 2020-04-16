@@ -2,24 +2,31 @@ package com.example.doma
 
 import com.alamkanak.weekview.WeekViewEvent
 import com.google.firebase.database.Exclude
+import java.security.Timestamp
 import java.util.*
 
 public class CustomEvent(
-    i: Int,
-    s: String,
-    startTime: Calendar,
-    endTime: Calendar
+
 ) : WeekViewEvent() {
 
     private var mId: Long = 0
     private var mStartTime: Calendar? = null
     private var mEndTime: Calendar? = null
+    private var mStartTimeStamp: java.sql.Timestamp? = null
     private var mName: String? = null
     private var mLocation: String? = null
     private var mStartString: String? = null
     private var mEndString: String? = null
+    private var mEndTimeStamp: java.sql.Timestamp? = null
     private var mColor = 0
 
+    fun CustomEvent(){}
+    constructor(i: Int,
+                s: String,
+                startTime: Calendar,
+                endTime: Calendar) : this()  {
+
+    }
 
     fun WeekViewEvent(
         id: Long,
@@ -84,12 +91,18 @@ public class CustomEvent(
     override fun getStartTime(): Calendar? {
         return mStartTime
     }
+    fun getStartTimeStamp(): java.sql.Timestamp? {
+        return mStartTimeStamp
+    }
     fun getStartString(): String? {
         return mStartTime.toString()
     }
 
     override fun setStartTime(startTime: Calendar?) {
         this.mStartTime = startTime
+    }
+    fun setStartTimeStamp(startTime: java.sql.Timestamp?) {
+        this.mStartTimeStamp = startTime
     }
     fun setStartString(startTime: String?) {
         this.mStartString = startTime
@@ -99,6 +112,9 @@ public class CustomEvent(
         return mEndTime
     }
 
+    fun getEndTimeStamp(): java.sql.Timestamp? {
+        return mEndTimeStamp
+    }
     fun getEndString(): String? {
         return mEndTime.toString()
     }
@@ -107,6 +123,9 @@ public class CustomEvent(
         this.mEndTime = endTime
     }
 
+    fun setEndTimeStamp(endTime: java.sql.Timestamp?) {
+        this.mEndTimeStamp = endTime
+    }
     fun setEndString(endTime: String?) {
         this.mEndString = endTime
     }

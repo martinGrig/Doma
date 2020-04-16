@@ -1,33 +1,37 @@
 package com.example.doma
 
 import android.app.AlertDialog
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import android.widget.*
-import com.alamkanak.weekview.WeekViewEvent
-import com.google.firebase.database.FirebaseDatabase
 import android.widget.Button
-import android.widget.LinearLayout
-import android.widget.PopupWindow
 import android.widget.TextView
-import com.alamkanak.weekview.WeekView
-import com.google.android.material.snackbar.Snackbar
+import android.widget.Toast
+import com.alamkanak.weekview.WeekViewEvent
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
-import kotlinx.android.synthetic.main.activity_schedule.*
+import java.security.Timestamp
+import java.sql.Time
+import java.text.SimpleDateFormat
 import java.util.*
 
 
 class ScheduleActivityBasic : ScheduleActivityBase() {
 
+    private lateinit var auth: FirebaseAuth
     private val events: MutableList<WeekViewEvent> = ArrayList()
     var thisYear = 0
     private var thisMonth = 0
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        auth = FirebaseAuth.getInstance()
         val add: View = findViewById(R.id.addEvent)
         add.setOnClickListener {
 
@@ -56,25 +60,9 @@ class ScheduleActivityBasic : ScheduleActivityBase() {
             }
         }
 
-        val firebaseDatabase = FirebaseDatabase.getInstance();
-        val reference = firebaseDatabase.getReference()
-        reference.child("event").addValueEventListener(object : ValueEventListener {
-            override fun onCancelled(p0: DatabaseError) {
-                // TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-            }
-
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                val children = dataSnapshot.children
-
-                children.forEach {
-                    var event = it.getValue(CustomEvent::class.java)
-                    events.add(event!!)
-                }
-                /*WeekView.adapter.notifyDataSetChanged()*/
-            }
-        })
-
     }
+
+
     private fun monthFromDate(): Int {
         val calendar = Calendar.getInstance()
         return calendar.get(Calendar.MONTH)
@@ -83,17 +71,23 @@ class ScheduleActivityBasic : ScheduleActivityBase() {
     private fun CreateEvent(date: Int, start: Int, end: Int){
        if(CheckEventTime(date, start, end) && start+2 >= end) {
             var startTime = Calendar.getInstance()
-            var endTime = Calendar.getInstance()
+           var startTimestamp : java.sql.Timestamp
+           var endTimestamp : java.sql.Timestamp
+           var endTime = Calendar.getInstance()
 
             startTime.set(thisYear, thisMonth - 1, date, start, 0)
             endTime.set(thisYear, thisMonth - 1, date, end, 0)
+           startTimestamp = java.sql.Timestamp(thisYear, thisMonth - 1, date, start, 0, 0, 0)
+           endTimestamp = java.sql.Timestamp(thisYear, thisMonth - 1, date, end, 0, 0, 0)
 
-            var event = CustomEvent(11, "WASHER", startTime, endTime)
+           var event = CustomEvent(11, auth.currentUser!!.email.toString(), startTime, endTime)
             event.id = events.size.toLong()
             event.startTime = startTime
             event.endTime = endTime
-            event.name = "Washer"
+            event.name = auth.currentUser!!.email
             event.color = R.color.event_color_01
+           event.setStartTimeStamp(startTimestamp)
+           event.setEndTimeStamp(endTimestamp)
             events.add(event)
 
             var firebaseDatabase = FirebaseDatabase.getInstance()
@@ -119,9 +113,43 @@ class ScheduleActivityBasic : ScheduleActivityBase() {
         return true
     }
 
+
+
     override fun onMonthChange(newYear: Int, newMonth: Int): List<WeekViewEvent> {
         thisMonth = newMonth -1
         thisYear = newYear
+        var realEvent : WeekViewEvent
+
+        /*val firebaseDatabase = FirebaseDatabase.getInstance();
+        val reference = firebaseDatabase.getReference()
+        reference.child("events").addValueEventListener(object : ValueEventListener {
+            override fun onCancelled(p0: DatabaseError) {
+                // TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+            }
+
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                val children = dataSnapshot.children
+
+                children.forEach {
+                    var event = it.getValue(CustomEvent::class.java)
+                    val start = Calendar.getInstance()
+                    start.set(event!!.getStartTimeStamp()!!.year, event.getStartTimeStamp()!!.month,
+                        event!!.getStartTimeStamp()!!.day, event.getStartTimeStamp()!!.hours, event!!.getStartTimeStamp()!!.minutes)
+                    *//*val sdf = SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy", Locale.ENGLISH)
+                    start.time = sdf.parse(event!!.getStartString())*//*
+                    val end = Calendar.getInstance()
+                    end.set(event!!.getEndTimeStamp()!!.year, event.getEndTimeStamp()!!.month,
+                        event!!.getEndTimeStamp()!!.day, event.getEndTimeStamp()!!.hours, event!!.getEndTimeStamp()!!.minutes)
+                    *//*val edf = SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy", Locale.ENGLISH)
+                    end.time = edf.parse(event!!.getEndString())*//*
+                    event.startTime = start
+                    event.endTime = end
+                    realEvent = event
+                    events.add(realEvent)
+                }
+                *//*WeekView.adapter.notifyDataSetChanged()*//*
+            }
+        })*/
 
         if (monthFromDate() == thisMonth)
         {
@@ -129,7 +157,7 @@ class ScheduleActivityBasic : ScheduleActivityBase() {
             //Make it in a function so we can use it elsewhere
 
             //region Events
-            var startTime = Calendar.getInstance()
+            /*var startTime = Calendar.getInstance()
             startTime[Calendar.HOUR_OF_DAY] = 3
             startTime[Calendar.MINUTE] = 0
             startTime[Calendar.MONTH] = newMonth - 1
@@ -155,11 +183,11 @@ class ScheduleActivityBasic : ScheduleActivityBase() {
 
             event = WeekViewEvent(2, "User66", startTime, endTime)
             event.color = R.color.event_color_02
-            events.add(event)
+            events.add(event)*/
 
             return events
         }
-        return emptyList()
+        return events
         //endregion
     }
 }
