@@ -12,12 +12,14 @@ public class CustomEvent(
     private var mId: Long = 0
     private var mStartTime: Calendar? = null
     private var mEndTime: Calendar? = null
-    private var mStartTimeStamp: java.sql.Timestamp? = null
+    private var mStartTimeLong: Long? = null;
+    private var mEndTimeLong: Long? = null;
+    /*private var mStartTimeStamp: java.sql.Timestamp? = null*/
     private var mName: String? = null
     private var mLocation: String? = null
-    private var mStartString: String? = null
+    /*private var mStartString: String? = null
     private var mEndString: String? = null
-    private var mEndTimeStamp: java.sql.Timestamp? = null
+    private var mEndTimeStamp: java.sql.Timestamp? = null*/
     private var mColor = 0
 
     fun CustomEvent(){}
@@ -91,44 +93,56 @@ public class CustomEvent(
     override fun getStartTime(): Calendar? {
         return mStartTime
     }
-    fun getStartTimeStamp(): java.sql.Timestamp? {
+    fun getStartTimeLong(): Long?{
+        return mStartTimeLong
+    }
+    /*fun getStartTimeStamp(): java.sql.Timestamp? {
         return mStartTimeStamp
     }
     fun getStartString(): String? {
         return mStartTime.toString()
-    }
+    }*/
 
     override fun setStartTime(startTime: Calendar?) {
         this.mStartTime = startTime
     }
-    fun setStartTimeStamp(startTime: java.sql.Timestamp?) {
+    fun setStartTimeLong(startTime: Long?) {
+        this.mStartTimeLong = startTime
+    }
+    /*fun setStartTimeStamp(startTime: java.sql.Timestamp?) {
         this.mStartTimeStamp = startTime
     }
     fun setStartString(startTime: String?) {
         this.mStartString = startTime
-    }
+    }*/
     @Exclude
     override fun getEndTime(): Calendar? {
         return mEndTime
     }
+    fun getEndTimeLong(): Long? {
+        return mEndTimeLong
+    }
 
-    fun getEndTimeStamp(): java.sql.Timestamp? {
+    /*fun getEndTimeStamp(): java.sql.Timestamp? {
         return mEndTimeStamp
     }
     fun getEndString(): String? {
         return mEndTime.toString()
-    }
+    }*/
 
     override fun setEndTime(endTime: Calendar?) {
         this.mEndTime = endTime
     }
+     fun setEndTimeLong(endTime: Long?) {
+        this.mEndTimeLong = endTime
+    }
 
-    fun setEndTimeStamp(endTime: java.sql.Timestamp?) {
+    /*fun setEndTimeStamp(endTime: java.sql.Timestamp?) {
         this.mEndTimeStamp = endTime
     }
     fun setEndString(endTime: String?) {
         this.mEndString = endTime
-    }
+    }*/
 
     override fun getName(): String? {
         return mName

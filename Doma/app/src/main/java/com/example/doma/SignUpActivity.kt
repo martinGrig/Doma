@@ -1,16 +1,23 @@
 package com.example.doma
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Patterns
+import android.widget.EditText
 import android.widget.Toast
+import androidx.annotation.NonNull
+import androidx.appcompat.app.AppCompatActivity
+import com.google.android.gms.tasks.Task
+import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.FirebaseDatabase
 import kotlinx.android.synthetic.main.activity_sign_up.*
+import java.util.*
 
 class SignUpActivity : AppCompatActivity() {
 
     private lateinit var auth: FirebaseAuth
+    private lateinit var mUsername : EditText
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -20,6 +27,9 @@ class SignUpActivity : AppCompatActivity() {
         btnSignUp.setOnClickListener {
             signUpUser()
         }
+
+
+
     }
 
     private fun signUpUser(){
@@ -41,6 +51,8 @@ class SignUpActivity : AppCompatActivity() {
             return
         }
 
+        mUsername = findViewById(R.id.editTextUsername) as EditText
+
         auth.createUserWithEmailAndPassword(editTextEmail.text.toString(), editTextPassword.text.toString())
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
@@ -57,6 +69,24 @@ class SignUpActivity : AppCompatActivity() {
                     Toast.makeText(baseContext, "Authentication failed.",
                         Toast.LENGTH_SHORT).show()
                 }
+                fun onComplete(@NonNull task: Task<AuthResult?>) {
+                    if (!task.isSuccessful) {
+                        Toast.makeText(this@SignUpActivity, "sign up error", Toast.LENGTH_SHORT)
+                            .show()
+                    } else {
+                        val user_id: String = auth.getCurrentUser()!!.getUid()
+                        val user = User(mUsername.text.toString(), editTextEmail.text.toString(), user_id)
+                            FirebaseDatabase.getInstance().reference.child("users")
+                                .child(user_id).setValue(user)
+                        /*val name: String = mUsername.getText().toString()
+
+                        val newPost: MutableMap<*, *> =
+                            HashMap<Any?, Any?>()
+                        newPost["name"] = name
+                        current_user_db.setValue(newPost)*/
+                    }
+                }
+
             }
 
     }
