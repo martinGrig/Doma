@@ -34,8 +34,7 @@ class ScheduleActivityBasic : ScheduleActivityBase() {
 
         auth = FirebaseAuth.getInstance()
 
-
-        var realEvent : WeekViewEvent = WeekViewEvent()
+        /*var realEvent : WeekViewEvent = WeekViewEvent()
         var temp: MutableList<WeekViewEvent> = ArrayList()
 
         val firebaseDatabase = FirebaseDatabase.getInstance();
@@ -53,22 +52,22 @@ class ScheduleActivityBasic : ScheduleActivityBase() {
                     val start = Calendar.getInstance()
                     var startDate = Date(event!!.getStartTimeLong()!!)
                     start.time = startDate
-                    /*start.set(event!!.getStartTimeStamp()!!.year, event.getStartTimeStamp()!!.month,
-                        event!!.getStartTimeStamp()!!.day, event.getStartTimeStamp()!!.hours, event!!.getStartTimeStamp()!!.minutes)*/
+                    *//*start.set(event!!.getStartTimeStamp()!!.year, event.getStartTimeStamp()!!.month,
+                        event!!.getStartTimeStamp()!!.day, event.getStartTimeStamp()!!.hours, event!!.getStartTimeStamp()!!.minutes)*//*
                     val end = Calendar.getInstance()
                     var endDate = Date(event!!.getEndTimeLong()!!)
                     end.time = endDate
-                    /*end.set(event!!.getEndTimeStamp()!!.year, event.getEndTimeStamp()!!.month,
-                    event!!.getEndTimeStamp()!!.day, event.getEndTimeStamp()!!.hours, event!!.getEndTimeStamp()!!.minutes)*/
+                    *//*end.set(event!!.getEndTimeStamp()!!.year, event.getEndTimeStamp()!!.month,
+                    event!!.getEndTimeStamp()!!.day, event.getEndTimeStamp()!!.hours, event!!.getEndTimeStamp()!!.minutes)*//*
                     event.startTime = start
                     event.endTime = end
                     realEvent = event
                     temp.add(realEvent)
                 }
-                /*WeekView.adapter.notifyDataSetChanged()*/
+                *//*WeekView.adapter.notifyDataSetChanged()*//*
                     events = temp
             }
-        })
+        })*/
 
 
         val add: View = findViewById(R.id.addEvent)
@@ -221,44 +220,47 @@ class ScheduleActivityBasic : ScheduleActivityBase() {
     override fun onMonthChange(newYear: Int, newMonth: Int): List<WeekViewEvent> {
         thisMonth = newMonth -1
         thisYear = newYear
+        while(events.isEmpty()) {
 
-        if (monthFromDate() == thisMonth)
-        {
+            //CreateEvent(date, startT, endT)
+            if (monthFromDate() == thisMonth)
+            {
 
-            /*var realEvent : WeekViewEvent = WeekViewEvent()
-            var temp: MutableList<WeekViewEvent> = ArrayList()
+                var realEvent : WeekViewEvent = WeekViewEvent()
+                var temp: MutableList<WeekViewEvent> = ArrayList()
 
-            val firebaseDatabase = FirebaseDatabase.getInstance();
-            val reference = firebaseDatabase.getReference()
-            reference.child("events").addValueEventListener(object : ValueEventListener {
-                override fun onCancelled(p0: DatabaseError) {
-                    // TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-                }
+                    val firebaseDatabase = FirebaseDatabase.getInstance();
+                    val reference = firebaseDatabase.getReference()
+                    reference.child("events").addValueEventListener(object : ValueEventListener {
+                        override fun onCancelled(p0: DatabaseError) {
+                            // TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+                        }
 
-                override fun onDataChange(dataSnapshot: DataSnapshot) {
-                    val children = dataSnapshot.children
+                        override fun onDataChange(dataSnapshot: DataSnapshot) {
+                            val children = dataSnapshot.children
 
-                    children.forEach {
-                        var event = it.getValue(CustomEvent::class.java)
-                        val start = Calendar.getInstance()
-                        var startDate = Date(event!!.getStartTimeLong()!!)
-                        start.time = startDate
-                        *//*start.set(event!!.getStartTimeStamp()!!.year, event.getStartTimeStamp()!!.month,
-                            event!!.getStartTimeStamp()!!.day, event.getStartTimeStamp()!!.hours, event!!.getStartTimeStamp()!!.minutes)*//*
-                        val end = Calendar.getInstance()
-                        var endDate = Date(event!!.getEndTimeLong()!!)
-                        end.time = endDate
-                        *//*end.set(event!!.getEndTimeStamp()!!.year, event.getEndTimeStamp()!!.month,
-                        event!!.getEndTimeStamp()!!.day, event.getEndTimeStamp()!!.hours, event!!.getEndTimeStamp()!!.minutes)*//*
-                        event.startTime = start
-                        event.endTime = end
-                        realEvent = event
-                        temp.add(realEvent)
-                    }
-                    *//*WeekView.adapter.notifyDataSetChanged()*//*
-
-                }
-            })*/
+                            children.forEach {
+                                var event = it.getValue(CustomEvent::class.java)
+                                val start = Calendar.getInstance()
+                                var startDate = Date(event!!.getStartTimeLong()!!)
+                                start.time = startDate
+                                /*start.set(event!!.getStartTimeStamp()!!.year, event.getStartTimeStamp()!!.month,
+                                            event!!.getStartTimeStamp()!!.day, event.getStartTimeStamp()!!.hours, event!!.getStartTimeStamp()!!.minutes)*/
+                                val end = Calendar.getInstance()
+                                var endDate = Date(event!!.getEndTimeLong()!!)
+                                end.time = endDate
+                                /*end.set(event!!.getEndTimeStamp()!!.year, event.getEndTimeStamp()!!.month,
+                                        event!!.getEndTimeStamp()!!.day, event.getEndTimeStamp()!!.hours, event!!.getEndTimeStamp()!!.minutes)*/
+                                event.startTime = start
+                                event.endTime = end
+                                realEvent = event
+                                events.add(realEvent)
+                            }
+                            /*WeekView.adapter.notifyDataSetChanged()*/
+                        }
+                    })
+                return events
+            }
             //events = temp
             //region Events
             /*var startTime = Calendar.getInstance()
@@ -269,9 +271,9 @@ class ScheduleActivityBasic : ScheduleActivityBase() {
             var endTime = startTime.clone() as Calendar
             endTime.add(Calendar.HOUR, 1)
             endTime[Calendar.MONTH] = newMonth - 1
-            var event = WeekViewEvent(1, "You", startTime, endTime)
-            event.color = R.color.event_color_02
-            events.add(event)
+            var eventi = WeekViewEvent(1, "You", startTime, endTime)
+            eventi.color = R.color.event_color_02
+            events.add(eventi)
 
             startTime = Calendar.getInstance()
             startTime[Calendar.HOUR_OF_DAY] = 6
@@ -285,10 +287,9 @@ class ScheduleActivityBasic : ScheduleActivityBase() {
             endTime[Calendar.MONTH] = newMonth - 1
             //startTime.add(Calendar.DATE, 1)
 
-            event = WeekViewEvent(2, "User66", startTime, endTime)
-            event.color = R.color.event_color_02
-            events.add(event)*/
-            return events
+            eventi = WeekViewEvent(2, "User66", startTime, endTime)
+            eventi.color = R.color.event_color_02
+            events.add(eventi)*/
         }
         return emptyList()
         //endregion
