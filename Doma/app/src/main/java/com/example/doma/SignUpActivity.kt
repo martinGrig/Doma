@@ -69,7 +69,7 @@ class SignUpActivity : AppCompatActivity() {
                     Toast.makeText(baseContext, "Authentication failed.",
                         Toast.LENGTH_SHORT).show()
                 }
-                fun onComplete(@NonNull task: Task<AuthResult?>) {
+                /*fun onComplete(@NonNull task: Task<AuthResult?>) {
                     if (!task.isSuccessful) {
                         Toast.makeText(this@SignUpActivity, "sign up error", Toast.LENGTH_SHORT)
                             .show()
@@ -78,14 +78,14 @@ class SignUpActivity : AppCompatActivity() {
                         val user = User(mUsername.text.toString(), editTextEmail.text.toString(), user_id)
                             FirebaseDatabase.getInstance().reference.child("users")
                                 .child(user_id).setValue(user)
-                        /*val name: String = mUsername.getText().toString()
+                        *//*val name: String = mUsername.getText().toString()
 
                         val newPost: MutableMap<*, *> =
                             HashMap<Any?, Any?>()
                         newPost["name"] = name
-                        current_user_db.setValue(newPost)*/
+                        current_user_db.setValue(newPost)*//*
                     }
-                }
+                }*/
 
             }
 
