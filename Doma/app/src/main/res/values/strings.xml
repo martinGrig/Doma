@@ -25,6 +25,9 @@
 
     <string name="home_second">Home Second</string>
     <string name="menu_calendar">Calendar</string>
+    <string name="enter_username">enter username</string>
+    <string name="enter_your_username">Enter your username</string>
+    <string name="log_out">Log out</string>
 
     <string-array name="date_array">
         <item>Today</item>

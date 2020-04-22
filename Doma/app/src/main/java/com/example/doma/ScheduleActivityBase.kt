@@ -1,6 +1,6 @@
 package com.example.doma
 
-//import android.R
+import android.content.Intent
 import android.graphics.RectF
 import android.os.Bundle
 import android.view.Menu
@@ -62,6 +62,8 @@ abstract class ScheduleActivityBase : AppCompatActivity(), EventClickListener,
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.activity_drawer_navigation_drawer, menu)
+        /*startActivity(Intent(this, SignInActivity::class.java))
+        finish()*/
         return true
     }
     //endregion
