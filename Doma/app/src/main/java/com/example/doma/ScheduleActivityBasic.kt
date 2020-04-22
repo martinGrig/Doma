@@ -25,8 +25,6 @@ class ScheduleActivityBasic : ScheduleActivityBase() {
     private var events: MutableList<WeekViewEvent> = ArrayList()
     var thisYear = 0
     private var thisMonth = 0
-    var timePick: TimePickerDialog? = null
-
 
     @SuppressLint("SimpleDateFormat")
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
@@ -53,19 +51,19 @@ class ScheduleActivityBasic : ScheduleActivityBase() {
                     val start = Calendar.getInstance()
                     var startDate = Date(event!!.getStartTimeLong()!!)
                     start.time = startDate
-                    *//*start.set(event!!.getStartTimeStamp()!!.year, event.getStartTimeStamp()!!.month,
-                        event!!.getStartTimeStamp()!!.day, event.getStartTimeStamp()!!.hours, event!!.getStartTimeStamp()!!.minutes)*//*
+                    start.set(event!!.getStartTimeStamp()!!.year, event.getStartTimeStamp()!!.month,
+                        event!!.getStartTimeStamp()!!.day, event.getStartTimeStamp()!!.hours, event!!.getStartTimeStamp()!!.minutes)
                     val end = Calendar.getInstance()
                     var endDate = Date(event!!.getEndTimeLong()!!)
                     end.time = endDate
-                    *//*end.set(event!!.getEndTimeStamp()!!.year, event.getEndTimeStamp()!!.month,
-                    event!!.getEndTimeStamp()!!.day, event.getEndTimeStamp()!!.hours, event!!.getEndTimeStamp()!!.minutes)*//*
+                    end.set(event!!.getEndTimeStamp()!!.year, event.getEndTimeStamp()!!.month,
+                    event!!.getEndTimeStamp()!!.day, event.getEndTimeStamp()!!.hours, event!!.getEndTimeStamp()!!.minutes)
                     event.startTime = start
                     event.endTime = end
                     realEvent = event
                     temp.add(realEvent)
                 }
-                *//*WeekView.adapter.notifyDataSetChanged()*//*
+                WeekView.adapter.notifyDataSetChanged()
                     events = temp
             }
         })*/
@@ -147,9 +145,7 @@ class ScheduleActivityBasic : ScheduleActivityBase() {
                 }
             }
         }
-
     }
-
 
     private fun monthFromDate(): Int {
         val calendar = Calendar.getInstance()
@@ -219,8 +215,7 @@ class ScheduleActivityBasic : ScheduleActivityBase() {
     override fun onMonthChange(newYear: Int, newMonth: Int): List<WeekViewEvent> {
         thisMonth = newMonth - 1
         thisYear = newYear
-        while (events.isEmpty()) {
-
+        //while (events.isEmpty()) {
 
             /*       val firebaseDatabase = FirebaseDatabase.getInstance();
         val reference = firebaseDatabase.getReference()
@@ -257,15 +252,14 @@ class ScheduleActivityBasic : ScheduleActivityBase() {
                 GetWeekView()?.notifyDatasetChanged()
             }
         })*/
-
-            if (monthFromDate() == thisMonth) {
-                return events
-            }
-            return emptyList()
+            //}
+        if (monthFromDate() == thisMonth) {
+            return events
         }
-        return events
+        return emptyList()
     }
 }
+//region Events
             //CreateEvent(date, startT, endT)
             /*if (monthFromDate() == thisMonth)
             {
@@ -306,7 +300,7 @@ class ScheduleActivityBasic : ScheduleActivityBase() {
                 return events
             }
             //events = temp
-            //region Events
+
             *//*var startTime = Calendar.getInstance()
             startTime[Calendar.HOUR_OF_DAY] = 3
             startTime[Calendar.MINUTE] = 0
@@ -336,5 +330,4 @@ class ScheduleActivityBasic : ScheduleActivityBase() {
             events.add(eventi)*//*
         }
         return emptyList()
-        //endregion
->>>>>>> e115d3019dbf9f3ec277b658243136cce7ca8eef*/
+        //endregion*/

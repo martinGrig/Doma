@@ -6,11 +6,32 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/kitchen"
-            android:icon="@drawable/ic_kitchen_black_24dp"
-            android:title="@string/kitchen" />
+            android:icon="@drawable/ic_kitchen"
+            android:title="Kitchen" />
+
+        <item
+            android:id="@+id/washmachine"
+            android:icon="@drawable/ic_washmachine"
+            android:title="Washing Machine" />
+
+        <item
+            android:id="@+id/bathroom"
+            android:icon="@drawable/ic_bathroom"
+            android:title="Bathroom" />
+
+        <item
+            android:id="@+id/oven"
+            android:icon="@drawable/ic_oven"
+            android:title="Oven" />
+
         <item
             android:id="@+id/smoke"
             android:icon="@drawable/ic_smoking_rooms_black_24dp"
             android:title="Smoking Room" />
+
+        <item
+            android:id="@+id/grill"
+            android:icon="@drawable/ic_grill"
+            android:title="Grill" />
     </group>
 </menu>

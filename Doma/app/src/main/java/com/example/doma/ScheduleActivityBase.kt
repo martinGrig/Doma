@@ -1,9 +1,9 @@
 package com.example.doma
 
-import android.content.Intent
 import android.graphics.RectF
 import android.os.Bundle
 import android.view.Menu
+import android.view.MenuItem
 import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
@@ -15,12 +15,13 @@ import com.alamkanak.weekview.MonthLoader.MonthChangeListener
 import com.alamkanak.weekview.WeekView
 import com.alamkanak.weekview.WeekView.*
 import com.alamkanak.weekview.WeekViewEvent
+import com.google.android.material.navigation.NavigationView
 import java.text.SimpleDateFormat
 import java.util.*
 
 
 abstract class ScheduleActivityBase : AppCompatActivity(), EventClickListener,
-    MonthChangeListener, EventLongPressListener, EmptyViewLongPressListener {
+    MonthChangeListener, EventLongPressListener, EmptyViewLongPressListener, NavigationView.OnNavigationItemSelectedListener {
     var weekView: WeekView? = null
         private set
     lateinit var drawer: DrawerLayout
@@ -52,6 +53,18 @@ abstract class ScheduleActivityBase : AppCompatActivity(), EventClickListener,
         toggle.syncState()
     }
 
+    override fun onNavigationItemSelected(item: MenuItem): Boolean {
+        when (item.itemId){
+            R.id.kitchen -> print("")
+            R.id.washmachine -> print("")
+            R.id.bathroom -> print("")
+            R.id.oven -> print("")
+            R.id.smoke -> print("")
+            R.id.grill -> print("")
+        }
+        drawer.closeDrawer(GravityCompat.START)
+        return true
+    }
     override fun onBackPressed() {
         if(drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START)
