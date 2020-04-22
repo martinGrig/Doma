@@ -6,9 +6,11 @@ import android.app.TimePickerDialog
 import android.app.TimePickerDialog.OnTimeSetListener
 import android.os.Build
 import android.os.Bundle
+import android.view.MenuItem
 import android.view.View
 import android.widget.*
 import androidx.annotation.RequiresApi
+import androidx.core.view.GravityCompat
 import com.alamkanak.weekview.WeekViewEvent
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
@@ -22,8 +24,14 @@ import java.util.*
 class ScheduleActivityBasic : ScheduleActivityBase() {
 
     private lateinit var auth: FirebaseAuth
-    private var events: MutableList<WeekViewEvent> = ArrayList()
-    var thisYear = 0
+    private var currEvents: MutableList<WeekViewEvent> = ArrayList()
+    private var kitchenEvents: MutableList<WeekViewEvent> = ArrayList()
+    private var washmachineEvents: MutableList<WeekViewEvent> = ArrayList()
+    private var bathroomEvents: MutableList<WeekViewEvent> = ArrayList()
+    private var ovenEvents: MutableList<WeekViewEvent> = ArrayList()
+    private var smokeEvents: MutableList<WeekViewEvent> = ArrayList()
+    private var grillEvents: MutableList<WeekViewEvent> = ArrayList()
+    private var thisYear = 0
     private var thisMonth = 0
 
     @SuppressLint("SimpleDateFormat")
@@ -38,7 +46,7 @@ class ScheduleActivityBasic : ScheduleActivityBase() {
 
         val firebaseDatabase = FirebaseDatabase.getInstance();
         val reference = firebaseDatabase.getReference()
-        reference.child("events").addValueEventListener(object : ValueEventListener {
+        reference.child("currEvents").addValueEventListener(object : ValueEventListener {
             override fun onCancelled(p0: DatabaseError) {
                 // TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
             }
@@ -64,10 +72,9 @@ class ScheduleActivityBasic : ScheduleActivityBase() {
                     temp.add(realEvent)
                 }
                 WeekView.adapter.notifyDataSetChanged()
-                    events = temp
+                    currEvents = temp
             }
         })*/
-
 
         val add: View = findViewById(R.id.addEvent)
         add.setOnClickListener {
@@ -147,6 +154,20 @@ class ScheduleActivityBasic : ScheduleActivityBase() {
         }
     }
 
+    override fun onNavigationItemSelected(item: MenuItem): Boolean {
+        when (item.itemId){
+            R.id.kitchen -> currEvents = kitchenEvents
+            R.id.washmachine -> currEvents = washmachineEvents
+            R.id.bathroom -> currEvents = bathroomEvents
+            R.id.oven -> currEvents = ovenEvents
+            R.id.smoke -> currEvents = smokeEvents
+            R.id.grill -> currEvents = grillEvents
+        }
+        GetWeekView()?.notifyDatasetChanged()
+        drawer.closeDrawer(GravityCompat.START)
+        return true
+    }
+
     private fun monthFromDate(): Int {
         val calendar = Calendar.getInstance()
         return calendar.get(Calendar.MONTH)
@@ -178,7 +199,7 @@ class ScheduleActivityBasic : ScheduleActivityBase() {
            endLong = endTime.timeInMillis / 1000;
 
            var event = CustomEvent(11, auth.currentUser!!.email.toString(), startTime, endTime)
-            event.id = events.size.toLong()
+            event.id = currEvents.size.toLong()
             event.startTime = startTime
             event.endTime = endTime
             event.name = auth.currentUser!!.email
@@ -187,18 +208,18 @@ class ScheduleActivityBasic : ScheduleActivityBase() {
            event.setEndTimeLong(endLong)
           /* event.setStartTimeStamp(startTimestamp)
            event.setEndTimeStamp(endTimestamp)*/
-            events.add(event)
+            currEvents.add(event)
 
             var firebaseDatabase = FirebaseDatabase.getInstance()
             var databaseReference = firebaseDatabase.reference
-            databaseReference.child("events").push().setValue(event)
+            databaseReference.child("currEvents").push().setValue(event)
 
             GetWeekView()?.notifyDatasetChanged()
         }
     }
 
     private fun checkEventTime(date: Int, start: Int, end: Int): Boolean{
-        events.forEach {
+        currEvents.forEach {
         var otherStart = it.startTime.get(Calendar.HOUR_OF_DAY)*60 + it.startTime.get(Calendar.MINUTE)
         var otherEnd = it.endTime.get(Calendar.HOUR_OF_DAY)*60 + it.endTime.get(Calendar.MINUTE)
         var otherDate = it.startTime.get(Calendar.DAY_OF_MONTH)
@@ -212,18 +233,18 @@ class ScheduleActivityBasic : ScheduleActivityBase() {
         return true
     }
 
-    
     override fun onMonthChange(newYear: Int, newMonth: Int): List<WeekViewEvent> {
         thisMonth = newMonth - 1
         thisYear = newYear
-        //while (events.isEmpty()) {
+
         if (monthFromDate() == thisMonth) {
+
             var realEvent: WeekViewEvent = WeekViewEvent()
             var temp: MutableList<WeekViewEvent> = ArrayList()
 
             val firebaseDatabase = FirebaseDatabase.getInstance();
             val reference = firebaseDatabase.getReference()
-            reference.child("events").addValueEventListener(object : ValueEventListener {
+            reference.child("currEvents").addValueEventListener(object : ValueEventListener {
                 override fun onCancelled(p0: DatabaseError) {
                     System.err.println("Listener was cancelled");
                 }
@@ -248,17 +269,17 @@ class ScheduleActivityBasic : ScheduleActivityBase() {
                         event.startTime = start
                         event.endTime = end
                         realEvent = event
-                        events.add(realEvent)
+                        currEvents.add(realEvent)
                     }
                     /*WeekView.adapter.notifyDataSetChanged()*/
                 }
             })
-            return events
+            return currEvents
         }
         return emptyList()
     }
-
 }
+//region Comment
             //CreateEvent(date, startT, endT)
             /*if (monthFromDate() == thisMonth)
             {
@@ -268,7 +289,7 @@ class ScheduleActivityBasic : ScheduleActivityBase() {
 
                     val firebaseDatabase = FirebaseDatabase.getInstance();
                     val reference = firebaseDatabase.getReference()
-                    reference.child("events").addValueEventListener(object : ValueEventListener {
+                    reference.child("currEvents").addValueEventListener(object : ValueEventListener {
                         override fun onCancelled(p0: DatabaseError) {
                             // TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
                         }
@@ -291,14 +312,14 @@ class ScheduleActivityBasic : ScheduleActivityBase() {
                                 event.startTime = start
                                 event.endTime = end
                                 realEvent = event
-                                events.add(realEvent)
+                                currEvents.add(realEvent)
                             }
                             *//*WeekView.adapter.notifyDataSetChanged()*//*
                         }
                     })
-                return events
+                return currEvents
             }
-            //events = temp
+            //currEvents = temp
 
             *//*var startTime = Calendar.getInstance()
             startTime[Calendar.HOUR_OF_DAY] = 3
@@ -310,7 +331,7 @@ class ScheduleActivityBasic : ScheduleActivityBase() {
             endTime[Calendar.MONTH] = newMonth - 1
             var eventi = WeekViewEvent(1, "You", startTime, endTime)
             eventi.color = R.color.event_color_02
-            events.add(eventi)
+            currEvents.add(eventi)
 
             startTime = Calendar.getInstance()
             startTime[Calendar.HOUR_OF_DAY] = 6
@@ -326,7 +347,7 @@ class ScheduleActivityBasic : ScheduleActivityBase() {
 
             eventi = WeekViewEvent(2, "User66", startTime, endTime)
             eventi.color = R.color.event_color_02
-            events.add(eventi)*//*
+            currEvents.add(eventi)*//*
         }
-        return emptyList()
-        //endregion*/
+        return emptyList()*/
+        //endregion

@@ -1,5 +1,8 @@
 package com.example.doma
 
+import android.content.Context
+import android.content.Intent
+import android.content.SharedPreferences
 import android.graphics.RectF
 import android.os.Bundle
 import android.view.Menu
@@ -15,16 +18,20 @@ import com.alamkanak.weekview.MonthLoader.MonthChangeListener
 import com.alamkanak.weekview.WeekView
 import com.alamkanak.weekview.WeekView.*
 import com.alamkanak.weekview.WeekViewEvent
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationView
 import java.text.SimpleDateFormat
 import java.util.*
 
 
 abstract class ScheduleActivityBase : AppCompatActivity(), EventClickListener,
-    MonthChangeListener, EventLongPressListener, EmptyViewLongPressListener, NavigationView.OnNavigationItemSelectedListener {
+    MonthChangeListener, EventLongPressListener, EmptyViewLongPressListener,
+    NavigationView.OnNavigationItemSelectedListener {
     var weekView: WeekView? = null
         private set
     lateinit var drawer: DrawerLayout
+    var currFacility = ""
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_schedule)
@@ -48,23 +55,16 @@ abstract class ScheduleActivityBase : AppCompatActivity(), EventClickListener,
         setSupportActionBar(toolbar)
 
         drawer = findViewById(R.id.schedule)
+        val navigationView: NavigationView = findViewById(R.id.nav_view)
+        navigationView.setNavigationItemSelectedListener(this)
+
+        //this.title = "Washing Machine"
+
         val toggle = ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close)
         drawer.addDrawerListener(toggle)
         toggle.syncState()
     }
 
-    override fun onNavigationItemSelected(item: MenuItem): Boolean {
-        when (item.itemId){
-            R.id.kitchen -> print("")
-            R.id.washmachine -> print("")
-            R.id.bathroom -> print("")
-            R.id.oven -> print("")
-            R.id.smoke -> print("")
-            R.id.grill -> print("")
-        }
-        drawer.closeDrawer(GravityCompat.START)
-        return true
-    }
     override fun onBackPressed() {
         if(drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START)
@@ -74,9 +74,17 @@ abstract class ScheduleActivityBase : AppCompatActivity(), EventClickListener,
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.activity_drawer_navigation_drawer, menu)
-        /*startActivity(Intent(this, SignInActivity::class.java))
+        menuInflater.inflate(R.menu.settings_menu, menu)
+/*        startActivity(Intent(this, SignInActivity::class.java))
         finish()*/
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when(item.itemId){
+            R.id.nav_profile -> Toast.makeText(applicationContext,"Not Implemented",Toast.LENGTH_SHORT).show()
+            R.id.nav_logout -> startActivity(Intent(this, SignInActivity::class.java))
+        }
         return true
     }
     //endregion

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/linear_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -10,7 +11,7 @@
 
     <Spinner
         android:id="@+id/date_spinner"
-        android:layout_width="250dp"
+        android:layout_width="334dp"
         android:layout_height="66dp"
         android:gravity="center"
         android:spinnerMode="dropdown" />
@@ -46,9 +47,9 @@
         style="@style/Widget.AppCompat.Button.Borderless.Colored"
         android:layout_width="250dp"
         android:layout_height="67dp"
-        android:background="#FFFFFF"
+        android:background="@color/colorPrimaryDark"
         android:text="Book"
-        android:textColor="#3E423E"
+        android:textColor="@android:color/white"
         android:textSize="18sp"
         android:textStyle="bold" />
 

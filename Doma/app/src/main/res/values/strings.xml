@@ -1,12 +1,11 @@
 <resources>
     <string name="app_name">Doma</string>
+    <string name="toolbar_label">Choose Facility</string>
     <string name="enter_your_email">Enter your email</string>
     <string name="enter_your_password">Enter your password</string>
     <string name="sign_up">sign up</string>
     <string name="go_to_sign_up">go to sign up</string>
     <string name="sign_in">sign in</string>
-    <string name="kitchen">Kitchen</string>
-    <string name="smooking_room">Smooking Room</string>
     <string name="profile">Profile</string>
 
     <string name="nav_open" />
