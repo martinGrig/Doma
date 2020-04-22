@@ -1,6 +1,6 @@
 package com.example.doma
 
-//import android.R
+import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.app.TimePickerDialog
 import android.app.TimePickerDialog.OnTimeSetListener
@@ -28,6 +28,7 @@ class ScheduleActivityBasic : ScheduleActivityBase() {
     var timePick: TimePickerDialog? = null
 
 
+    @SuppressLint("SimpleDateFormat")
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -72,7 +73,7 @@ class ScheduleActivityBasic : ScheduleActivityBase() {
                 }
             }
             tbStart.setOnClickListener{
-                var cal = Calendar.getInstance();
+                var cal = Calendar.getInstance()
                 val timeSetListener = OnTimeSetListener { view, hour, minute ->
                     cal.set(Calendar.HOUR_OF_DAY, hour)
                     cal.set(Calendar.MINUTE, minute)
@@ -83,10 +84,10 @@ class ScheduleActivityBasic : ScheduleActivityBase() {
                 }
                 TimePickerDialog(this, timeSetListener, cal.get(Calendar.HOUR_OF_DAY), cal.get(Calendar.MINUTE), true).show()
 
-                startBool = true;
+                startBool = true
             }
             tbEnd.setOnClickListener{
-                var cal = Calendar.getInstance();
+                var cal = Calendar.getInstance()
                 val timeSetListener = OnTimeSetListener { view, hour, minute ->
                     cal.set(Calendar.HOUR_OF_DAY, hour)
                     cal.set(Calendar.MINUTE, minute)
@@ -97,14 +98,14 @@ class ScheduleActivityBasic : ScheduleActivityBase() {
                 }
                 TimePickerDialog(this, timeSetListener, cal.get(Calendar.HOUR_OF_DAY), cal.get(Calendar.MINUTE), true).show()
 
-                endBool = true;
+                endBool = true
             }
 
             btnBook.setOnClickListener {
 
               if ( startBool && endBool && startT+180 >= endT && startT < endT)
               {
-                    CreateEvent(date, startT, endT)
+                    createEvent(date, startT, endT)
                     dialogBuilder.dismiss()
                 }
             }
@@ -138,8 +139,8 @@ class ScheduleActivityBasic : ScheduleActivityBase() {
         return calendar.get(Calendar.MONTH)
     }
 
-    private fun CreateEvent(date: Int, start: Int, end: Int){
-       if(CheckEventTime(date, start, end) && start+180 >= end && start < end) {
+    private fun createEvent(date: Int, start: Int, end: Int){
+       if(checkEventTime(date, start, end) && start+180 >= end && start < end) {
             var startTime = Calendar.getInstance()
            var startTimestamp : java.sql.Timestamp
            var endTimestamp : java.sql.Timestamp
@@ -168,14 +169,14 @@ class ScheduleActivityBasic : ScheduleActivityBase() {
             events.add(event)
 
             var firebaseDatabase = FirebaseDatabase.getInstance()
-            var databaseReference = firebaseDatabase.getReference()
+            var databaseReference = firebaseDatabase.reference
             databaseReference.child("events").push().setValue(event)
 
             GetWeekView()?.notifyDatasetChanged()
         }
     }
 
-    private fun CheckEventTime(date: Int, start: Int, end: Int): Boolean{
+    private fun checkEventTime(date: Int, start: Int, end: Int): Boolean{
         events.forEach {
         var otherStart = it.startTime.get(Calendar.HOUR_OF_DAY)*60 + it.startTime.get(Calendar.MINUTE)
         var otherEnd = it.endTime.get(Calendar.HOUR_OF_DAY)*60 + it.endTime.get(Calendar.MINUTE)
@@ -190,14 +191,12 @@ class ScheduleActivityBasic : ScheduleActivityBase() {
         return true
     }
 
-
-
     override fun onMonthChange(newYear: Int, newMonth: Int): List<WeekViewEvent> {
         thisMonth = newMonth -1
         thisYear = newYear
         var realEvent : WeekViewEvent
 
-        /*val firebaseDatabase = FirebaseDatabase.getInstance();
+ /*       val firebaseDatabase = FirebaseDatabase.getInstance();
         val reference = firebaseDatabase.getReference()
         reference.child("events").addValueEventListener(object : ValueEventListener {
             override fun onCancelled(p0: DatabaseError) {
@@ -209,62 +208,34 @@ class ScheduleActivityBasic : ScheduleActivityBase() {
 
                 children.forEach {
                     var event = it.getValue(CustomEvent::class.java)
+
                     val start = Calendar.getInstance()
                     start.set(event!!.getStartTimeStamp()!!.year, event.getStartTimeStamp()!!.month,
                         event!!.getStartTimeStamp()!!.day, event.getStartTimeStamp()!!.hours, event!!.getStartTimeStamp()!!.minutes)
-                    *//*val sdf = SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy", Locale.ENGLISH)
-                    start.time = sdf.parse(event!!.getStartString())*//*
+
+                    val sdf = SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy", Locale.ENGLISH)
+                    start.time = sdf.parse(event!!.getStartString())
+
                     val end = Calendar.getInstance()
                     end.set(event!!.getEndTimeStamp()!!.year, event.getEndTimeStamp()!!.month,
                         event!!.getEndTimeStamp()!!.day, event.getEndTimeStamp()!!.hours, event!!.getEndTimeStamp()!!.minutes)
-                    *//*val edf = SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy", Locale.ENGLISH)
-                    end.time = edf.parse(event!!.getEndString())*//*
+
+                    val edf = SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy", Locale.ENGLISH)
+                    end.time = edf.parse(event!!.getEndString())
+
                     event.startTime = start
                     event.endTime = end
                     realEvent = event
                     events.add(realEvent)
                 }
-                *//*WeekView.adapter.notifyDataSetChanged()*//*
+                GetWeekView()?.notifyDatasetChanged()
             }
         })*/
 
         if (monthFromDate() == thisMonth)
         {
-            //Replace below code so that it loads events from the database (first of course clean up database)
-            //Make it in a function so we can use it elsewhere
-
-            //region Events
-            /*var startTime = Calendar.getInstance()
-            startTime[Calendar.HOUR_OF_DAY] = 3
-            startTime[Calendar.MINUTE] = 0
-            startTime[Calendar.MONTH] = newMonth - 1
-            startTime[Calendar.YEAR] = 2020
-            var endTime = startTime.clone() as Calendar
-            endTime.add(Calendar.HOUR, 1)
-            endTime[Calendar.MONTH] = newMonth - 1
-            var event = WeekViewEvent(1, "You", startTime, endTime)
-            event.color = R.color.event_color_02
-            events.add(event)
-
-            startTime = Calendar.getInstance()
-            startTime[Calendar.HOUR_OF_DAY] = 6
-            startTime[Calendar.MINUTE] = 30
-            startTime[Calendar.MONTH] = newMonth - 1
-            startTime[Calendar.YEAR] = newYear
-
-            endTime = startTime.clone() as Calendar
-            endTime[Calendar.HOUR_OF_DAY] = 8
-            endTime[Calendar.MINUTE] = 30
-            endTime[Calendar.MONTH] = newMonth - 1
-            //startTime.add(Calendar.DATE, 1)
-
-            event = WeekViewEvent(2, "User66", startTime, endTime)
-            event.color = R.color.event_color_02
-            events.add(event)*/
-
             return events
         }
-        return events
-        //endregion
+        return emptyList()
     }
 }

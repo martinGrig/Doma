@@ -11,10 +11,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <activity
-            android:name=".DrawerNavigationActivity"
-            android:label="@string/title_activity_drawer_navigation"
-            android:theme="@style/AppTheme.NoActionBar" />
+
         <activity android:name=".SignInActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -24,8 +21,8 @@
         <activity android:name=".SignUpActivity" />
         <activity
             android:name=".ScheduleActivityBasic"
-            android:label="Schedule">
-
+            android:label="Schedule"
+            android:theme="@style/AppTheme.NoActionBar">
         </activity>
 
     </application>

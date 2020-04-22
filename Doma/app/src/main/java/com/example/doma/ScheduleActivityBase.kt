@@ -1,10 +1,15 @@
 package com.example.doma
 
+//import android.R
 import android.graphics.RectF
 import android.os.Bundle
 import android.view.Menu
 import android.widget.Toast
+import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
+import androidx.core.view.GravityCompat
+import androidx.drawerlayout.widget.DrawerLayout
 import com.alamkanak.weekview.DateTimeInterpreter
 import com.alamkanak.weekview.MonthLoader.MonthChangeListener
 import com.alamkanak.weekview.WeekView
@@ -18,8 +23,8 @@ abstract class ScheduleActivityBase : AppCompatActivity(), EventClickListener,
     MonthChangeListener, EventLongPressListener, EmptyViewLongPressListener {
     var weekView: WeekView? = null
         private set
-
-    protected override fun onCreate(savedInstanceState: Bundle?) {
+    lateinit var drawer: DrawerLayout
+    override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_schedule)
 
@@ -38,9 +43,22 @@ abstract class ScheduleActivityBase : AppCompatActivity(), EventClickListener,
         // Set long press listener for empty view
         weekView!!.emptyViewLongPressListener = this
 
+        var toolbar: Toolbar = findViewById(R.id.toolbar)
+        setSupportActionBar(toolbar)
+
+        drawer = findViewById(R.id.schedule)
+        val toggle = ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close)
+        drawer.addDrawerListener(toggle)
+        toggle.syncState()
     }
 
-    //region Menu Events
+    override fun onBackPressed() {
+        if(drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START)
+        } else {
+            super.onBackPressed()
+        }
+    }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.activity_drawer_navigation_drawer, menu)
@@ -87,13 +105,12 @@ abstract class ScheduleActivityBase : AppCompatActivity(), EventClickListener,
     companion object {
         private const val TYPE_THREE_DAY_VIEW = 2
     }
+
+    fun GetWeekView(): WeekView? {
+        return weekView
+    }
     //endregion
 
-    //region Create Events
-
-    public fun GetWeekView(): WeekView? {
-    return weekView
-    }
 
 }
 

@@ -11,7 +11,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"/>
 
-    <com.google.android.material.navigation.NavigationView
+<!--    <com.google.android.material.navigation.NavigationView
     android:id="@+id/nested"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -22,7 +22,7 @@
             layout="@layout/content_main"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
-    </com.google.android.material.navigation.NavigationView>
+    </com.google.android.material.navigation.NavigationView>-->
 
 <!--    <Button
         android:id="@+id/btnGoToSignUp"

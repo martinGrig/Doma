@@ -5,7 +5,7 @@ import com.google.firebase.database.Exclude
 import java.security.Timestamp
 import java.util.*
 
-public class CustomEvent(
+class CustomEvent(
 
 ) : WeekViewEvent() {
 
@@ -24,9 +24,7 @@ public class CustomEvent(
     constructor(i: Int,
                 s: String,
                 startTime: Calendar,
-                endTime: Calendar) : this()  {
-
-    }
+                endTime: Calendar) : this()
 
     fun WeekViewEvent(
         id: Long,

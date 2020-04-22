@@ -8,6 +8,7 @@
     <string name="kitchen">Kitchen</string>
     <string name="smooking_room">Smooking Room</string>
     <string name="profile">Profile</string>
+
     <string name="nav_open" />
     <string name="nav_close">Close navigation Drawer</string>
     <string name="title_activity_drawer_navigation">DrawerNavigationActivity</string>
