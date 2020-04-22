@@ -216,56 +216,55 @@ class ScheduleActivityBasic : ScheduleActivityBase() {
         return true
     }
 
+
+
     override fun onMonthChange(newYear: Int, newMonth: Int): List<WeekViewEvent> {
         thisMonth = newMonth - 1
         thisYear = newYear
-        while (events.isEmpty()) {
+        //while (events.isEmpty()) {
+        if (monthFromDate() == thisMonth) {
+            var realEvent: WeekViewEvent = WeekViewEvent()
+            var temp: MutableList<WeekViewEvent> = ArrayList()
 
-
-            /*       val firebaseDatabase = FirebaseDatabase.getInstance();
-        val reference = firebaseDatabase.getReference()
-        reference.child("events").addValueEventListener(object : ValueEventListener {
-            override fun onCancelled(p0: DatabaseError) {
-                // TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-            }
-
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                val children = dataSnapshot.children
-
-                children.forEach {
-                    var event = it.getValue(CustomEvent::class.java)
-
-                    val start = Calendar.getInstance()
-                    start.set(event!!.getStartTimeStamp()!!.year, event.getStartTimeStamp()!!.month,
-                        event!!.getStartTimeStamp()!!.day, event.getStartTimeStamp()!!.hours, event!!.getStartTimeStamp()!!.minutes)
-
-                    val sdf = SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy", Locale.ENGLISH)
-                    start.time = sdf.parse(event!!.getStartString())
-
-                    val end = Calendar.getInstance()
-                    end.set(event!!.getEndTimeStamp()!!.year, event.getEndTimeStamp()!!.month,
-                        event!!.getEndTimeStamp()!!.day, event.getEndTimeStamp()!!.hours, event!!.getEndTimeStamp()!!.minutes)
-
-                    val edf = SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy", Locale.ENGLISH)
-                    end.time = edf.parse(event!!.getEndString())
-
-                    event.startTime = start
-                    event.endTime = end
-                    realEvent = event
-                    events.add(realEvent)
+            val firebaseDatabase = FirebaseDatabase.getInstance();
+            val reference = firebaseDatabase.getReference()
+            reference.child("events").addValueEventListener(object : ValueEventListener {
+                override fun onCancelled(p0: DatabaseError) {
+                    System.err.println("Listener was cancelled");
                 }
-                GetWeekView()?.notifyDatasetChanged()
-            }
-        })*/
 
-            if (monthFromDate() == thisMonth) {
-                return events
-            }
-            return emptyList()
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    val children = dataSnapshot.children
+                    /*val connected: Boolean? = dataSnapshot.getValue(Boolean::class.java)
+                    if (connected!!) {
+                        println("connected")
+                    } else {
+                        println("not connected")
+                    }*/
+
+                    children.forEach {
+                        var event = it.getValue(CustomEvent::class.java)
+                        val start = Calendar.getInstance()
+                        var startDate = Date(event!!.getStartTimeLong()!!)
+                        start.time = startDate
+                        val end = Calendar.getInstance()
+                        var endDate = Date(event.getEndTimeLong()!!)
+                        end.time = endDate
+                        event.startTime = start
+                        event.endTime = end
+                        realEvent = event
+                        events.add(realEvent)
+                    }
+                    /*WeekView.adapter.notifyDataSetChanged()*/
+                }
+            })
+            return events
         }
-        return events
+        return emptyList()
     }
+
 }
+//}
             //CreateEvent(date, startT, endT)
             /*if (monthFromDate() == thisMonth)
             {
